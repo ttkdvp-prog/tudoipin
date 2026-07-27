@@ -1,9 +1,16 @@
 import React, { useState, useMemo } from 'react';
-import { AlertTriangle, Search, Filter, MessageSquare, CheckCircle, Clock, ExternalLink } from 'lucide-react';
+import { AlertTriangle, Search, Filter, MessageSquare, CheckCircle, Clock, ExternalLink, Layers } from 'lucide-react';
 
 export default function BottlenecksTab({ stations, onSelectStation }) {
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedDot, setSelectedDot] = useState('ALL');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
+
+  // Dynamic Batch List
+  const dotsList = useMemo(() => {
+    const set = new Set(stations.map(s => s.dot).filter(Boolean));
+    return Array.from(set).sort();
+  }, [stations]);
 
   // Categorize bottleneck types
   const categorizedStations = useMemo(() => {
@@ -13,13 +20,13 @@ export default function BottlenecksTab({ stations, onSelectStation }) {
 
       if (vm.includes('vgreen') || vm.includes('chưa nhận lại')) {
         category = 'Chờ VGREEN phản hồi hồ sơ';
-      } else if (vm.includes('hợp đồng') || vm.includes('khảo sát') || vm.includes('chờ điện lực')) {
+      } else if (vm.includes('hợp đồng') || vm.includes('khảo sát') || vm.includes('chờ điện lực') || vm.includes('soạn hđ')) {
         category = 'Chờ Điện Lực (EVN) khảo sát/HĐ';
       } else if (vm.includes('cắt tường') || vm.includes('mặt bằng') || vm.includes('ngầm')) {
         category = 'Vướng thi công / Mặt bằng / Cắt tường';
       } else if (vm.includes('vật tư') || vm.includes('dây') || vm.includes('cáp')) {
         category = 'Chờ vật tư cáp / ống ngầm';
-      } else if (vm.length <= 3 || vm.includes('không') || vm.includes('đã hoàn thành')) {
+      } else if (vm.length <= 3 || vm.includes('không') || vm.includes('đã hoàn thành') || vm.includes('đóng điện')) {
         category = 'Đã hoàn thành / Không vướng';
       }
 
@@ -37,24 +44,27 @@ export default function BottlenecksTab({ stations, onSelectStation }) {
     'Khác'
   ];
 
-  // Filtered issue list (excluding empty ones unless explicitly selected)
+  // Filtered issue list
   const filteredIssues = useMemo(() => {
     return categorizedStations.filter(s => {
-      // Must have issue text or non-completed category
       const hasIssue = s.vuong_mac && s.vuong_mac.trim().length > 2 && s.category !== 'Đã hoàn thành / Không vướng';
       if (!hasIssue && selectedCategory === 'ALL') return false;
 
+      // Universal search matching Mã trạm, Tổ HT, Tên địa điểm, Địa chỉ, Người phụ trách
       const matchSearch = searchTerm === '' ||
         s.ma_tram.toLowerCase().includes(searchTerm.toLowerCase()) ||
         s.ten_co_so.toLowerCase().includes(searchTerm.toLowerCase()) ||
         s.to_ht.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        s.dia_chi.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        s.to_truong.toLowerCase().includes(searchTerm.toLowerCase()) ||
         s.vuong_mac.toLowerCase().includes(searchTerm.toLowerCase());
 
+      const matchDot = selectedDot === 'ALL' || s.dot === selectedDot;
       const matchCat = selectedCategory === 'ALL' ? true : s.category === selectedCategory;
 
-      return matchSearch && matchCat;
+      return matchSearch && matchDot && matchCat;
     });
-  }, [categorizedStations, searchTerm, selectedCategory]);
+  }, [categorizedStations, searchTerm, selectedDot, selectedCategory]);
 
   return (
     <div className="space-y-6">
@@ -73,29 +83,44 @@ export default function BottlenecksTab({ stations, onSelectStation }) {
 
         <div className="flex items-center space-x-2 bg-slate-800/80 px-4 py-2 rounded-lg border border-slate-700">
           <div className="text-right">
-            <span className="text-xs text-slate-400 block">Tổng số vướng mắc</span>
+            <span className="text-xs text-slate-400 block">Số vướng mắc đang hiển thị</span>
             <span className="text-xl font-extrabold text-amber-400">
-              {categorizedStations.filter(s => s.vuong_mac && s.vuong_mac.trim().length > 3 && s.category !== 'Đã hoàn thành / Không vướng').length} trạm
+              {filteredIssues.length} trạm
             </span>
           </div>
         </div>
       </div>
 
-      {/* Category Pills & Search */}
+      {/* Universal Search Bar & Filters */}
       <div className="glass-card rounded-xl p-4 flex flex-col md:flex-row items-center justify-between gap-3">
-        {/* Search */}
-        <div className="relative w-full md:w-72">
+        {/* Universal Search Input */}
+        <div className="relative w-full md:w-80">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
-            placeholder="Tìm theo nội dung vướng mắc..."
+            placeholder="Tìm theo Mã trạm, Tổ hạ tầng, Tên địa điểm..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-9 pr-4 py-1.5 bg-slate-800/80 border border-slate-700 rounded-lg text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-500"
           />
         </div>
 
-        {/* Category Filters */}
+        {/* Dynamic Đợt Filter */}
+        <div className="flex items-center space-x-1.5 bg-slate-800/80 border border-slate-700 rounded-lg px-2.5 py-1.5">
+          <Layers className="w-3.5 h-3.5 text-cyan-400" />
+          <select
+            value={selectedDot}
+            onChange={(e) => setSelectedDot(e.target.value)}
+            className="bg-transparent text-xs text-slate-200 font-medium focus:outline-none cursor-pointer"
+          >
+            <option value="ALL" className="bg-slate-900">Tất cả các đợt ({dotsList.length} đợt)</option>
+            {dotsList.map(d => (
+              <option key={d} value={d} className="bg-slate-900">{d}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Category Pills */}
         <div className="flex flex-wrap gap-1.5 w-full md:w-auto">
           {categories.map(cat => {
             const isActive = selectedCategory === cat;
@@ -119,8 +144,8 @@ export default function BottlenecksTab({ stations, onSelectStation }) {
       {/* Issues Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredIssues.length === 0 ? (
-          <div className="col-span-full glass-card rounded-xl p-8 text-center text-slate-400">
-            Không tìm thấy thông tin vướng mắc nào phù hợp với bộ lọc.
+          <div className="col-span-full glass-card rounded-xl p-8 text-center text-slate-400 text-xs">
+            Không tìm thấy thông tin vướng mắc nào phù hợp với bộ lọc tìm kiếm.
           </div>
         ) : (
           filteredIssues.map((station) => (
@@ -133,7 +158,7 @@ export default function BottlenecksTab({ stations, onSelectStation }) {
                 <div className="flex items-center justify-between">
                   <span className="font-mono font-bold text-xs text-cyan-400">{station.ma_tram}</span>
                   <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">
-                    {station.to_ht}
+                    {station.to_ht} • {station.dot}
                   </span>
                 </div>
 
@@ -158,7 +183,7 @@ export default function BottlenecksTab({ stations, onSelectStation }) {
               <div className="mt-4 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
                 <span>Phụ trách: <strong>{station.to_truong || 'Chưa rõ'}</strong></span>
                 <span className="text-cyan-400 hover:underline flex items-center">
-                  Chi tiết <ExternalLink className="w-3 h-3 ml-0.5" />
+                  Sửa ghi chú <ExternalLink className="w-3 h-3 ml-0.5" />
                 </span>
               </div>
             </div>

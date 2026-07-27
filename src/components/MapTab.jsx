@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import { MapPin, Zap, Wrench, AlertTriangle, Phone } from 'lucide-react';
+import { MapPin, Zap, Wrench, AlertTriangle, Phone, Search, Filter, Layers } from 'lucide-react';
 
 // Fix Leaflet marker icons in React Vite
 delete L.Icon.Default.prototype._getIconUrl;
@@ -36,37 +36,82 @@ const amberIcon = createCustomIcon('#f59e0b'); // In progress / EVN
 const redIcon = createCustomIcon('#ef4444');   // Issue
 
 export default function MapTab({ stations, onSelectStation }) {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedDot, setSelectedDot] = useState('ALL');
+
+  // Dynamic Batch List
+  const dotsList = useMemo(() => {
+    const set = new Set(stations.map(s => s.dot).filter(Boolean));
+    return Array.from(set).sort();
+  }, [stations]);
+
+  // Filter stations by search term and batch
+  const filteredStations = useMemo(() => {
+    return stations.filter(s => {
+      const matchSearch = searchTerm === '' ||
+        s.ma_tram.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        s.ten_co_so.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        s.to_ht.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        s.dia_chi.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        s.to_truong.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchDot = selectedDot === 'ALL' || s.dot === selectedDot;
+
+      return matchSearch && matchDot;
+    });
+  }, [stations, searchTerm, selectedDot]);
+
   // Filter stations with valid coordinates
-  const validStations = stations.filter(s => s.lat && s.lng && !isNaN(s.lat) && !isNaN(s.lng));
+  const validStations = useMemo(() => {
+    return filteredStations.filter(s => s.lat && s.lng && !isNaN(s.lat) && !isNaN(s.lng));
+  }, [filteredStations]);
 
   // Default map center (Phú Thọ / Hòa Bình area)
   const defaultCenter = [21.0, 105.3];
 
   return (
     <div className="space-y-4">
-      {/* Top Controls Bar */}
-      <div className="glass-card rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-        <div>
-          <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center">
-            <MapPin className="w-4 h-4 mr-2 text-cyan-400" />
-            Bản Đồ Vị Trí Trạm Tủ Đổi Pin ({validStations.length} Trạm Có Tọa Độ)
-          </h3>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Nhấp vào từng ghim vị trí để xem chi tiết trạm, tổ hạ tầng và tình trạng điện lực.
-          </p>
+      {/* Search Bar & Controls Bar */}
+      <div className="glass-card rounded-xl p-4 flex flex-col md:flex-row items-center justify-between gap-3">
+        {/* Universal Search Input */}
+        <div className="relative w-full md:w-80">
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Tìm theo Mã trạm, Tổ hạ tầng, Tên địa điểm..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-9 pr-4 py-2 bg-slate-800/80 border border-slate-700 rounded-lg text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-500"
+          />
         </div>
 
-        {/* Legend */}
-        <div className="flex items-center space-x-3 text-xs bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
-          <span className="flex items-center text-emerald-400 font-medium">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 mr-1.5"></span> Đã hoàn thành
-          </span>
-          <span className="flex items-center text-amber-400 font-medium">
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-500 mr-1.5"></span> Chờ EVN/HĐ
-          </span>
-          <span className="flex items-center text-rose-400 font-medium">
-            <span className="w-2.5 h-2.5 rounded-full bg-rose-500 mr-1.5"></span> Có vướng mắc
-          </span>
+        {/* Dynamic Đợt Filter & Legend */}
+        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
+          <div className="flex items-center space-x-1.5 bg-slate-800/80 border border-slate-700 rounded-lg px-3 py-1.5">
+            <Layers className="w-3.5 h-3.5 text-cyan-400" />
+            <select
+              value={selectedDot}
+              onChange={(e) => setSelectedDot(e.target.value)}
+              className="bg-transparent text-xs text-slate-200 font-medium focus:outline-none cursor-pointer"
+            >
+              <option value="ALL" className="bg-slate-900">Tất cả các đợt ({dotsList.length} đợt)</option>
+              {dotsList.map(d => (
+                <option key={d} value={d} className="bg-slate-900">{d}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex items-center space-x-3 text-xs bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
+            <span className="flex items-center text-emerald-400 font-medium">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 mr-1.5"></span> Đã xong
+            </span>
+            <span className="flex items-center text-amber-400 font-medium">
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-500 mr-1.5"></span> Chờ EVN
+            </span>
+            <span className="flex items-center text-rose-400 font-medium">
+              <span className="w-2.5 h-2.5 rounded-full bg-rose-500 mr-1.5"></span> Có vướng mắc
+            </span>
+          </div>
         </div>
       </div>
 
@@ -98,7 +143,7 @@ export default function MapTab({ stations, onSelectStation }) {
                     <div className="flex items-center justify-between border-b border-slate-700 pb-1">
                       <span className="font-mono font-bold text-xs text-cyan-400">{station.ma_tram}</span>
                       <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">
-                        {station.to_ht}
+                        {station.to_ht} • {station.dot}
                       </span>
                     </div>
 
@@ -106,6 +151,7 @@ export default function MapTab({ stations, onSelectStation }) {
                     <p className="text-[11px] text-slate-300">{station.dia_chi || station.dia_ban}</p>
 
                     <div className="text-[11px] text-slate-300 space-y-1">
+                      <div>⚡ PA Điện: <strong>{station.pa_dien || 'EVN 3P'}</strong></div>
                       <div>⚡ Số tủ: <strong>{station.so_luong_tu} tủ ({station.loai_tu})</strong></div>
                       <div>👤 Phụ trách: <strong>{station.to_truong} ({station.sdt})</strong></div>
                     </div>
@@ -120,7 +166,7 @@ export default function MapTab({ stations, onSelectStation }) {
                       onClick={() => onSelectStation(station)}
                       className="w-full mt-2 py-1 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded text-[11px] transition-colors"
                     >
-                      Xem chi tiết trạm
+                      Sửa thông số trạm
                     </button>
                   </div>
                 </Popup>

@@ -1,38 +1,71 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import StatCard from './StatCard';
-import { Wrench, Zap, AlertTriangle, Layers, Building2, CheckCircle2 } from 'lucide-react';
+import { Wrench, Zap, AlertTriangle, Layers, Building2, CheckCircle2, Search, Filter } from 'lucide-react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 import { Bar, Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
 export default function OverviewTab({ stations, onSelectStation }) {
-  const totalStations = stations.length;
-  const dot1Count = stations.filter(s => s.dot.includes('1')).length;
-  const dot2Count = stations.filter(s => s.dot.includes('2')).length;
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedDot, setSelectedDot] = useState('ALL');
 
-  const totalCabinets = stations.reduce((acc, s) => acc + (s.so_luong_tu || 2), 0);
+  // Dynamic Batch (Đợt) List
+  const dotsList = useMemo(() => {
+    const set = new Set(stations.map(s => s.dot).filter(Boolean));
+    return Array.from(set).sort();
+  }, [stations]);
+
+  // Filtered Stations based on universal search & batch filter
+  const filteredStations = useMemo(() => {
+    return stations.filter(s => {
+      const matchSearch = searchTerm === '' ||
+        s.ma_tram.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        s.ten_co_so.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        s.to_ht.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        s.dia_chi.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        s.to_truong.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchDot = selectedDot === 'ALL' || s.dot === selectedDot;
+
+      return matchSearch && matchDot;
+    });
+  }, [stations, searchTerm, selectedDot]);
+
+  const totalStations = filteredStations.length;
+  const totalCabinets = filteredStations.reduce((acc, s) => acc + (s.so_luong_tu || 2), 0);
 
   // Status counters
-  const installedDone = stations.filter(s => s.status_lap_dat === 'Đã hoàn thành').length;
-  const installedProgress = stations.filter(s => s.status_lap_dat === 'Đang thi công').length;
-  const installedPending = totalStations - installedDone - installedProgress;
+  const installedDone = filteredStations.filter(s => s.status_lap_dat === 'Đã hoàn thành').length;
+  const installedProgress = filteredStations.filter(s => s.status_lap_dat === 'Đang thi công').length;
 
-  const powerDone = stations.filter(s => s.status_dien_luc === 'Đã đóng điện 3P').length;
-  const powerPending = stations.filter(s => s.status_dien_luc === 'Chờ Điện lực xử lý/HĐ').length;
-  const powerIssue = stations.filter(s => s.status_dien_luc === 'Vướng mắc thủ tục').length;
+  const powerDone = filteredStations.filter(s => {
+    const vm = (s.vuong_mac || '').toLowerCase();
+    return vm.includes('đóng điện') || vm.includes('nghiệm thu') || vm.includes('đã hoàn thành') || s.status_dien_luc === 'Đã đóng điện 3P';
+  }).length;
 
-  const totalIssues = stations.filter(s => s.vuong_mac && s.vuong_mac.trim().length > 3).length;
+  const powerPending = filteredStations.filter(s => {
+    const vm = (s.vuong_mac || '').toLowerCase();
+    return vm.includes('khảo sát') || vm.includes('hợp đồng') || vm.includes('chờ điện lực') || vm.includes('soạn hđ');
+  }).length;
+
+  const totalIssues = filteredStations.filter(s => s.vuong_mac && s.vuong_mac.trim().length > 3 && !(s.vuong_mac.toLowerCase().includes('đã hoàn thành') || s.vuong_mac.toLowerCase().includes('đã đóng điện'))).length;
 
   // Breakdown by Tổ Hạ Tầng
   const teamsMap = {};
-  stations.forEach(s => {
+  filteredStations.forEach(s => {
     const team = s.to_ht || 'Khác';
     if (!teamsMap[team]) teamsMap[team] = { total: 0, installed: 0, powerDone: 0, issues: 0 };
     teamsMap[team].total++;
     if (s.status_lap_dat === 'Đã hoàn thành') teamsMap[team].installed++;
-    if (s.status_dien_luc === 'Đã đóng điện 3P') teamsMap[team].powerDone++;
-    if (s.vuong_mac && s.vuong_mac.trim().length > 3) teamsMap[team].issues++;
+
+    const vm = (s.vuong_mac || '').toLowerCase();
+    if (vm.includes('đóng điện') || vm.includes('nghiệm thu') || vm.includes('đã hoàn thành') || s.status_dien_luc === 'Đã đóng điện 3P') {
+      teamsMap[team].powerDone++;
+    }
+    if (s.vuong_mac && s.vuong_mac.trim().length > 3 && !(vm.includes('đã hoàn thành') || vm.includes('đã đóng điện'))) {
+      teamsMap[team].issues++;
+    }
   });
 
   const teamLabels = Object.keys(teamsMap);
@@ -50,7 +83,7 @@ export default function OverviewTab({ stations, onSelectStation }) {
         borderRadius: 6,
       },
       {
-        label: 'Đã đóng điện 3P',
+        label: 'Đã đóng điện EVN',
         data: teamPowerDoneData,
         backgroundColor: 'rgba(16, 185, 129, 0.8)',
         borderRadius: 6,
@@ -78,10 +111,10 @@ export default function OverviewTab({ stations, onSelectStation }) {
   };
 
   const doughnutData = {
-    labels: ['Đã hoàn thành', 'Chờ xử lý EVN', 'Vướng mắc'],
+    labels: ['Đã đóng điện', 'Chờ xử lý EVN', 'Có vướng mắc'],
     datasets: [
       {
-        data: [powerDone, powerPending, powerIssue + (totalStations - powerDone - powerPending - powerIssue)],
+        data: [powerDone, powerPending, Math.max(0, totalStations - powerDone - powerPending)],
         backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
         borderWidth: 0,
       }
@@ -90,26 +123,58 @@ export default function OverviewTab({ stations, onSelectStation }) {
 
   return (
     <div className="space-y-6">
+      {/* Universal Search & Batch Filter Bar */}
+      <div className="glass-card rounded-xl p-4 flex flex-col md:flex-row items-center justify-between gap-3">
+        {/* Universal Search Input */}
+        <div className="relative w-full md:w-80">
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Tìm theo Mã trạm, Tổ hạ tầng, Tên địa điểm..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-9 pr-4 py-2 bg-slate-800/80 border border-slate-700 rounded-lg text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-500"
+          />
+        </div>
+
+        {/* Dynamic Đợt Filter */}
+        <div className="flex items-center space-x-2 w-full md:w-auto justify-end">
+          <div className="flex items-center space-x-1.5 bg-slate-800/80 border border-slate-700 rounded-lg px-3 py-1.5">
+            <Filter className="w-3.5 h-3.5 text-cyan-400" />
+            <select
+              value={selectedDot}
+              onChange={(e) => setSelectedDot(e.target.value)}
+              className="bg-transparent text-xs text-slate-200 font-medium focus:outline-none cursor-pointer"
+            >
+              <option value="ALL" className="bg-slate-900">Tất cả các đợt ({dotsList.length} đợt)</option>
+              {dotsList.map(d => (
+                <option key={d} value={d} className="bg-slate-900">{d}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+
       {/* Top KPI Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          title="Tổng Số Trạm Tủ Đổi Pin"
+          title="Tổng Số Trạm Quản Lý"
           value={`${totalStations} Trạm`}
-          subtext={`Đợt 1: ${dot1Count} trạm | Đợt 2: ${dot2Count} trạm`}
+          subtext={`Lọc theo kết quả tìm kiếm`}
           icon={Building2}
           color="cyan"
         />
         <StatCard
-          title="Tổng Số Tủ Lắp Đặt"
+          title="Tổng Số Tủ Pin"
           value={`${totalCabinets} Tủ`}
-          subtext="Các loại tủ 6 ngăn và 12 ngăn"
+          subtext="Các loại tủ 6-12 ngăn"
           icon={Wrench}
           color="purple"
         />
         <StatCard
           title="Tiến Độ Điện Lực EVN"
           value={`${powerDone}/${totalStations} Trạm`}
-          subtext={`${powerPending} trạm đang chờ thủ tục EVN`}
+          subtext={`${powerPending} trạm đang tiến hành thủ tục`}
           icon={Zap}
           color="emerald"
           percent={Math.round((powerDone / (totalStations || 1)) * 100)}
@@ -117,7 +182,7 @@ export default function OverviewTab({ stations, onSelectStation }) {
         <StatCard
           title="Trạm Có Vướng Mắc"
           value={`${totalIssues} Trạm`}
-          subtext="Vướng mặt bằng, hợp đồng, cắt tường..."
+          subtext="Cần xử lý dứt điểm trở ngại"
           icon={AlertTriangle}
           color="red"
           percent={Math.round((totalIssues / (totalStations || 1)) * 100)}
@@ -144,13 +209,13 @@ export default function OverviewTab({ stations, onSelectStation }) {
         <div className="glass-card rounded-xl p-5 flex flex-col justify-between">
           <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-2 flex items-center">
             <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-400" />
-            Tỷ Lệ Hoàn Thành EVN
+            Tỷ Lệ Đóng Điện EVN
           </h3>
           <div className="h-52 relative flex items-center justify-center my-2">
             <Doughnut data={doughnutData} options={{ maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 11 } } } } }} />
           </div>
           <div className="text-center text-xs text-slate-400 border-t border-slate-800 pt-3">
-            Tỷ lệ phủ điện 3 Pha EVN đạt <span className="text-emerald-400 font-bold">{Math.round((powerDone / (totalStations || 1)) * 100)}%</span>
+            Tỷ lệ phủ điện EVN đạt <span className="text-emerald-400 font-bold">{Math.round((powerDone / (totalStations || 1)) * 100)}%</span>
           </div>
         </div>
       </div>
@@ -162,11 +227,11 @@ export default function OverviewTab({ stations, onSelectStation }) {
             <AlertTriangle className="w-4 h-4 mr-2 text-amber-400" />
             Các Trạm Cần Chú Ý Xử Lý Vướng Mắc Gần Đây
           </h3>
-          <span className="text-xs text-slate-400">Hiển thị trạm có ghi chú vướng mắc</span>
+          <span className="text-xs text-slate-400">Lọc theo từ khóa tìm kiếm</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {stations.filter(s => s.vuong_mac && s.vuong_mac.trim().length > 3).slice(0, 6).map((station) => (
+          {filteredStations.filter(s => s.vuong_mac && s.vuong_mac.trim().length > 3 && !(s.vuong_mac.toLowerCase().includes('đã hoàn thành') || s.vuong_mac.toLowerCase().includes('đã đóng điện'))).slice(0, 6).map((station) => (
             <div
               key={station.id}
               onClick={() => onSelectStation(station)}
@@ -178,7 +243,7 @@ export default function OverviewTab({ stations, onSelectStation }) {
                   {station.to_ht}
                 </span>
               </div>
-              <p className="text-xs font-medium text-slate-200 mt-1 truncate">{station.ten_co_so}</p>
+              <p className="text-xs font-semibold text-slate-100 mt-1 truncate">{station.ten_co_so}</p>
               <p className="text-xs text-amber-300/90 mt-1 line-clamp-2 italic">
                 "{station.vuong_mac}"
               </p>

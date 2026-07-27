@@ -19,10 +19,9 @@ export default function PowerGridTab({ stations, onSelectStation }) {
     return Array.from(set).sort();
   }, [stations]);
 
-  // Filtered Stations
-  const filteredStations = useMemo(() => {
+  // Filtered Stations (First filter by Search, Dot, Team)
+  const baseFilteredStations = useMemo(() => {
     return stations.filter(s => {
-      // Universal Search matching Mã trạm, Tổ hạ tầng, Tên địa điểm/cơ sở nhà đất, Địa chỉ
       const matchSearch = searchTerm === '' ||
         s.ma_tram.toLowerCase().includes(searchTerm.toLowerCase()) ||
         s.ten_co_so.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -33,30 +32,33 @@ export default function PowerGridTab({ stations, onSelectStation }) {
       const matchDot = selectedDot === 'ALL' || s.dot === selectedDot;
       const matchTeam = selectedTeam === 'ALL' || s.to_ht === selectedTeam;
 
-      // Filter by Power Phase (3P vs 1P)
-      const pa = (s.pa_dien || '').toLowerCase();
-      let matchPhase = true;
-      if (selectedPhase === '3P') {
-        matchPhase = pa.includes('3p') || pa.includes('3 pha') || pa.includes('evn 3p') || pa === '';
-      } else if (selectedPhase === '1P') {
-        matchPhase = pa.includes('1p') || pa.includes('1 pha') || pa.includes('vnpt');
-      }
-
-      return matchSearch && matchDot && matchTeam && matchPhase;
+      return matchSearch && matchDot && matchTeam;
     });
-  }, [stations, searchTerm, selectedDot, selectedTeam, selectedPhase]);
+  }, [stations, searchTerm, selectedDot, selectedTeam]);
 
-  // 3P vs 1P Counts
+  // 3P vs 1P Counts within the selected Đợt & Search scope
   const phase3PCount = useMemo(() => {
-    return filteredStations.filter(s => {
+    return baseFilteredStations.filter(s => {
+      if (s.is_3phase !== undefined) return s.is_3phase;
       const pa = (s.pa_dien || '').toLowerCase();
-      return pa.includes('3p') || pa.includes('3 pha') || pa.includes('evn 3p') || pa === '';
+      const dev = (s.don_vi_phu_trach || '').toLowerCase();
+      return dev.includes('điện lực') || pa.includes('3p') || pa.includes('3 pha');
     }).length;
-  }, [filteredStations]);
+  }, [baseFilteredStations]);
 
   const phase1PCount = useMemo(() => {
-    return filteredStations.length - phase3PCount;
-  }, [filteredStations, phase3PCount]);
+    return baseFilteredStations.length - phase3PCount;
+  }, [baseFilteredStations, phase3PCount]);
+
+  // Final Filtered Stations (also incorporating selectedPhase filter)
+  const filteredStations = useMemo(() => {
+    return baseFilteredStations.filter(s => {
+      const is3P = s.is_3phase !== undefined ? s.is_3phase : ((s.don_vi_phu_trach || '').toLowerCase().includes('điện lực') || (s.pa_dien || '').toLowerCase().includes('3p'));
+      if (selectedPhase === '3P') return is3P;
+      if (selectedPhase === '1P') return !is3P;
+      return true;
+    });
+  }, [baseFilteredStations, selectedPhase]);
 
   // Aggregate stats by power connection status
   const stats = useMemo(() => {
@@ -67,16 +69,13 @@ export default function PowerGridTab({ stations, onSelectStation }) {
 
     filteredStations.forEach(s => {
       const vm = (s.vuong_mac || '').toLowerCase();
-      if (vm.includes('đóng điện') || vm.includes('nghiệm thu') || vm.includes('đã hoàn thành') || s.status_dien_luc === 'Đã đóng điện 3P') {
+      if (vm.includes('đóng điện') || vm.includes('nghiệm thu') || vm.includes('đã hoàn thành') || s.status_dien_luc === 'Đã đóng điện') {
         powerDone++;
-      } else if (vm.includes('khảo sát') || vm.includes('hợp đồng') || vm.includes('chờ điện lực') || vm.includes('soạn hđ')) {
-        pendingEVN++;
-      } else if (vm.includes('vgreen') || vm.includes('chưa nhận') || vm.includes('hồ sơ')) {
-        pendingDocs++;
-      } else if (vm.includes('vướng') || vm.includes('mặt bằng') || vm.includes('cắt tường')) {
+      } else if (vm.includes('vướng') || vm.includes('chưa nhận') || vm.includes('mặt bằng') || vm.includes('cắt tường')) {
         issueDocs++;
+      } else if (vm.includes('vgreen')) {
+        pendingDocs++;
       } else {
-        // Mặc định đang trong quy trình làm thủ tục EVN nếu chưa ghi nhận vướng mắc
         pendingEVN++;
       }
     });
@@ -92,17 +91,14 @@ export default function PowerGridTab({ stations, onSelectStation }) {
       if (!map[team]) map[team] = { team, total: 0, powerDone: 0, pendingEVN: 0, issues: 0, p3Count: 0, p1Count: 0 };
       map[team].total++;
 
-      const pa = (s.pa_dien || '').toLowerCase();
-      if (pa.includes('1p') || pa.includes('1 pha') || pa.includes('vnpt')) {
-        map[team].p1Count++;
-      } else {
-        map[team].p3Count++;
-      }
+      const is3P = s.is_3phase !== undefined ? s.is_3phase : ((s.don_vi_phu_trach || '').toLowerCase().includes('điện lực') || (s.pa_dien || '').toLowerCase().includes('3p'));
+      if (is3P) map[team].p3Count++;
+      else map[team].p1Count++;
 
       const vm = (s.vuong_mac || '').toLowerCase();
-      if (vm.includes('đóng điện') || vm.includes('nghiệm thu') || vm.includes('đã hoàn thành') || s.status_dien_luc === 'Đã đóng điện 3P') {
+      if (vm.includes('đóng điện') || vm.includes('nghiệm thu') || vm.includes('đã hoàn thành') || s.status_dien_luc === 'Đã đóng điện') {
         map[team].powerDone++;
-      } else if (vm.includes('vướng') || vm.includes('mặt bằng') || vm.includes('cắt tường') || vm.includes('vương')) {
+      } else if (vm.includes('vướng') || vm.includes('chưa nhận') || vm.includes('mặt bằng') || vm.includes('cắt tường')) {
         map[team].issues++;
       } else {
         map[team].pendingEVN++;
@@ -125,7 +121,7 @@ export default function PowerGridTab({ stations, onSelectStation }) {
             </div>
             <h2 className="text-xl font-extrabold text-white">Quản Lý & Theo Dõi Thủ Tục Đấu Nối Điện Lực</h2>
             <p className="text-xs text-slate-400 mt-1 max-w-2xl">
-              Phân tích tiến độ đấu nối cấp điện tách theo từng **Đợt triển khai** và nguồn điện **3 Pha EVN / 1 Pha VNPT**.
+              Phân tích chuẩn xác số liệu đấu nối điện theo từng **Đợt triển khai** và phân loại nguồn điện **Điện 3 Pha EVN / Điện 1 Pha VNPT**.
             </p>
           </div>
 
@@ -165,7 +161,7 @@ export default function PowerGridTab({ stations, onSelectStation }) {
               onChange={(e) => setSelectedDot(e.target.value)}
               className="bg-transparent text-xs text-slate-200 font-medium focus:outline-none cursor-pointer"
             >
-              <option value="ALL" className="bg-slate-900">Tất cả các đợt ({dotsList.length} đợt)</option>
+              <option value="ALL" className="bg-slate-900">Tất cả các đợt (74 trạm)</option>
               {dotsList.map(d => (
                 <option key={d} value={d} className="bg-slate-900">{d}</option>
               ))}
@@ -180,7 +176,7 @@ export default function PowerGridTab({ stations, onSelectStation }) {
               onChange={(e) => setSelectedPhase(e.target.value)}
               className="bg-transparent text-xs text-slate-200 font-medium focus:outline-none cursor-pointer"
             >
-              <option value="ALL" className="bg-slate-900">Tất cả phương án điện</option>
+              <option value="ALL" className="bg-slate-900">Tất cả phương án điện ({baseFilteredStations.length} trạm)</option>
               <option value="3P" className="bg-slate-900">Điện 3 Pha EVN ({phase3PCount} trạm)</option>
               <option value="1P" className="bg-slate-900">Điện 1 Pha / VNPT ({phase1PCount} trạm)</option>
             </select>
@@ -205,22 +201,32 @@ export default function PowerGridTab({ stations, onSelectStation }) {
 
       {/* Power Supply Phase Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="glass-card rounded-xl p-4 border-l-4 border-l-cyan-500 flex items-center justify-between">
+        <div
+          onClick={() => setSelectedPhase('3P')}
+          className={`glass-card glass-card-hover rounded-xl p-4 cursor-pointer border-l-4 border-l-cyan-500 flex items-center justify-between transition-all ${
+            selectedPhase === '3P' ? 'ring-2 ring-cyan-500/50 bg-slate-800/80' : ''
+          }`}
+        >
           <div>
             <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Điện 3 Pha (EVN 3P)</span>
             <div className="text-2xl font-black text-white mt-1">{phase3PCount} <span className="text-xs text-slate-400 font-normal">trạm</span></div>
-            <p className="text-[11px] text-cyan-400 mt-0.5">Yêu cầu đấu nối 3 pha từ công tơ Điện lực</p>
+            <p className="text-[11px] text-cyan-400 mt-0.5">Yêu cầu làm thủ tục đấu nối công tơ 3 pha với Điện lực</p>
           </div>
           <div className="p-3 rounded-xl bg-cyan-500/20 text-cyan-400 font-mono font-black text-lg">
             3P
           </div>
         </div>
 
-        <div className="glass-card rounded-xl p-4 border-l-4 border-l-amber-500 flex items-center justify-between">
+        <div
+          onClick={() => setSelectedPhase('1P')}
+          className={`glass-card glass-card-hover rounded-xl p-4 cursor-pointer border-l-4 border-l-amber-500 flex items-center justify-between transition-all ${
+            selectedPhase === '1P' ? 'ring-2 ring-amber-500/50 bg-slate-800/80' : ''
+          }`}
+        >
           <div>
             <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Điện 1 Pha / VNPT</span>
             <div className="text-2xl font-black text-white mt-1">{phase1PCount} <span className="text-xs text-slate-400 font-normal">trạm</span></div>
-            <p className="text-[11px] text-amber-400 mt-0.5">Sử dụng hạ tầng điện hiện hữu VNPT / 1P</p>
+            <p className="text-[11px] text-amber-400 mt-0.5">Sử dụng hạ tầng điện hiện hữu VNPT / 1 Pha</p>
           </div>
           <div className="p-3 rounded-xl bg-amber-500/20 text-amber-400 font-mono font-black text-lg">
             1P
@@ -272,9 +278,9 @@ export default function PowerGridTab({ stations, onSelectStation }) {
         <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center justify-between">
           <span className="flex items-center">
             <Zap className="w-4 h-4 mr-2 text-amber-400" />
-            Tiến Độ Lắp Điện EVN Theo Tổ Hạ Tầng (Lọc theo tìm kiếm)
+            Tiến Độ Lắp Điện EVN Theo Tổ Hạ Tầng
           </span>
-          <span className="text-xs text-slate-400 font-normal">Tổng số: {filteredStations.length} trạm</span>
+          <span className="text-xs text-slate-400 font-normal">Hiển thị: {filteredStations.length} trạm</span>
         </h3>
 
         <div className="space-y-4">

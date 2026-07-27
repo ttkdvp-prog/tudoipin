@@ -1,12 +1,10 @@
 const XLSX = require('xlsx');
 const fs = require('fs');
 
-console.log('Generating accurate initial_data.json from Master Sheets...');
+console.log('Updating initial_data.json with Column "Lắp điện" status parsing...');
 const filename = '46+1 điểm TĐP và 28 điểm TĐP.xlsx';
 
 const wb = XLSX.readFile(filename, { cellDates: true, sheetRows: 100 });
-
-// Process ONLY the master sheets: '46 +1 điểm' (Đợt 1) and '28 điểm' (Đợt 2)
 const masterSheets = ['46 +1 điểm', '28 điểm'];
 const allStations = [];
 const seenMaTram = new Set();
@@ -23,14 +21,12 @@ masterSheets.forEach(sheetName => {
     if (!maTram || seenMaTram.has(maTram)) return;
     seenMaTram.add(maTram);
 
-    // Determine batch (Đợt 1 / Đợt 2)
     let dot = String(rowObj['Đợt'] || rowObj['đợt'] || '').trim();
     if (!dot) {
       if (sheetName.includes('46')) dot = 'đợt 1';
       else if (sheetName.includes('28')) dot = 'đợt 2';
     }
 
-    // Determine Power Phase: Check 'Điện Lực' vs 'Điện VNPT' columns
     const isEvn = Boolean(rowObj['Điện Lực'] && String(rowObj['Điện Lực']).trim().toLowerCase() === 'x');
     const isVnpt = Boolean(rowObj['Điện VNPT'] && String(rowObj['Điện VNPT']).trim().toLowerCase() === 'x');
 
@@ -57,24 +53,23 @@ masterSheets.forEach(sheetName => {
       }
     }
 
+    const lapDienVal = String(rowObj['Lắp điện'] || rowObj['Lắp Điện'] || '').trim();
     const lyDoVuongMac = String(rowObj['Lý do chưa triển khai lắp điện'] || rowObj['Vướng mắc'] || rowObj['Ghi Chú'] || '').trim();
 
-    // Determine status
+    // Determine status: Prioritize Column 'Lắp điện' first, then 'Vướng mắc'
     let statusLapDat = 'Chưa lắp đặt';
-    if (lyDoVuongMac.toLowerCase().includes('đã hoàn thành') || lyDoVuongMac.toLowerCase().includes('đã lắp') || lyDoVuongMac.toLowerCase().includes('xong')) {
-      statusLapDat = 'Đã hoàn thành';
-    } else if (lyDoVuongMac.toLowerCase().includes('đang') || lyDoVuongMac.toLowerCase().includes('khảo sát')) {
-      statusLapDat = 'Đang triển khai';
-    }
+    let statusDienLuc = 'Chờ Điện lực xử lý/HĐ';
 
-    let statusDienLuc = 'Chưa làm thủ tục';
-    if (lyDoVuongMac.toLowerCase().includes('đã đóng điện') || lyDoVuongMac.toLowerCase().includes('nghiệm thu')) {
+    const combinedText = (lapDienVal + ' ' + lyDoVuongMac).toLowerCase();
+
+    if (combinedText.includes('đã lắp xong') || combinedText.includes('đã đóng điện') || combinedText.includes('nghiệm thu') || combinedText.includes('hoàn thành')) {
+      statusLapDat = 'Đã hoàn thành';
       statusDienLuc = 'Đã đóng điện';
-    } else if (lyDoVuongMac.toLowerCase().includes('đã gửi') || lyDoVuongMac.toLowerCase().includes('khảo sát') || lyDoVuongMac.toLowerCase().includes('hợp đồng') || lyDoVuongMac.toLowerCase().includes('hồ sơ') || lyDoVuongMac.toLowerCase().includes('soạn hđ')) {
-      statusDienLuc = 'Chờ Điện lực xử lý/HĐ';
-    } else if (lyDoVuongMac.toLowerCase().includes('vướng') || lyDoVuongMac.toLowerCase().includes('chưa nhận')) {
+    } else if (combinedText.includes('vướng') || combinedText.includes('chưa nhận') || combinedText.includes('mặt bằng') || combinedText.includes('cắt tường')) {
       statusDienLuc = 'Có vướng mắc';
-    } else {
+      if (combinedText.includes('đang')) statusLapDat = 'Đang triển khai';
+    } else if (combinedText.includes('đang') || combinedText.includes('khảo sát')) {
+      statusLapDat = 'Đang triển khai';
       statusDienLuc = 'Chờ Điện lực xử lý/HĐ';
     }
 
@@ -96,6 +91,7 @@ masterSheets.forEach(sheetName => {
       pa_dien: paDien,
       don_vi_phu_trach: donViPhuTrach,
       is_3phase: is3Phase,
+      lap_dien: lapDienVal,
       status_lap_dat: statusLapDat,
       status_dien_luc: statusDienLuc,
       vuong_mac: lyDoVuongMac,
@@ -106,13 +102,9 @@ masterSheets.forEach(sheetName => {
   });
 });
 
-console.log(`\n========================================`);
-console.log(`Total Master Stations Parsed: ${allStations.length}`);
-const dot1 = allStations.filter(s => s.dot.includes('1'));
-const dot2 = allStations.filter(s => s.dot.includes('2'));
-
-console.log(`Đợt 1 Total: ${dot1.length} trạm (EVN 3P: ${dot1.filter(s => s.is_3phase).length}, VNPT 1P: ${dot1.filter(s => !s.is_3phase).length})`);
-console.log(`Đợt 2 Total: ${dot2.length} trạm (EVN 3P: ${dot2.filter(s => s.is_3phase).length}, VNPT 1P: ${dot2.filter(s => !s.is_3phase).length})`);
+console.log(`\nTotal Stations: ${allStations.length}`);
+const doneCount = allStations.filter(s => s.status_dien_luc === 'Đã đóng điện').length;
+console.log(`Stations with "Đã đóng điện" / "Đã lắp xong": ${doneCount} trạm`);
 
 if (!fs.existsSync('public')) fs.mkdirSync('public', { recursive: true });
 fs.writeFileSync('public/initial_data.json', JSON.stringify(allStations, null, 2), 'utf8');

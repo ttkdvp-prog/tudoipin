@@ -1,5 +1,5 @@
 /**
- * GOOGLE APPS SCRIPT CHO DASHBOARD TỦ ĐỔI PIN & TIẾN ĐỘ ĐIỆN LỰC (DỮ LIỆU CHUẨN XÁC 74 TRẠM)
+ * GOOGLE APPS SCRIPT CHO DASHBOARD TỦ ĐỔI PIN & TIẾN ĐỘ ĐIỆN LỰC (ĐỌC CỘT "LẮP ĐIỆN")
  * Spreadsheet ID: 1lYCGrd20SgUCSy5U3au_sZx2ci9WewiYzfl9OJMg3rM
  * GitHub Repository: https://github.com/ttkdvp-prog/tudoipin
  */
@@ -49,9 +49,6 @@ function doPost(e) {
   }
 }
 
-/**
- * Quét dữ liệu từ Google Spreadsheet - Loại bỏ các Sheet thống kê trùng lặp
- */
 function getAllStationData() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheets = ss.getSheets();
@@ -61,7 +58,6 @@ function getAllStationData() {
   sheets.forEach(function(sheet) {
     var sheetName = sheet.getName();
     
-    // Bo qua cac sheet tong hop/danh sach con bi trung
     if (sheetName.indexOf('DS lắp điện') !== -1 || sheetName.indexOf('danh sách') !== -1) {
       return;
     }
@@ -101,7 +97,6 @@ function getAllStationData() {
         else dot = sheetName;
       }
 
-      // Xac dinh Dien 3 Pha EVN hay Điện VNPT 1P
       var isEvn = Boolean(rowObj['Điện Lực'] && String(rowObj['Điện Lực']).trim().toLowerCase() === 'x');
       var isVnpt = Boolean(rowObj['Điện VNPT'] && String(rowObj['Điện VNPT']).trim().toLowerCase() === 'x');
 
@@ -128,20 +123,23 @@ function getAllStationData() {
         }
       }
 
+      var lapDienVal = String(rowObj['Lắp điện'] || rowObj['Lắp Điện'] || '').trim();
       var lyDoVuongMac = String(rowObj['Lý do chưa triển khai lắp điện'] || rowObj['Vướng mắc'] || rowObj['Ghi Chú'] || '').trim();
 
-      var statusLapDat = 'Chưa lắp đặt';
-      if (lyDoVuongMac.toLowerCase().indexOf('đã hoàn thành') !== -1 || lyDoVuongMac.toLowerCase().indexOf('đã lắp') !== -1 || lyDoVuongMac.toLowerCase().indexOf('xong') !== -1) {
-        statusLapDat = 'Đã hoàn thành';
-      } else if (lyDoVuongMac.toLowerCase().indexOf('đang') !== -1 || lyDoVuongMac.toLowerCase().indexOf('khảo sát') !== -1) {
-        statusLapDat = 'Đang triển khai';
-      }
+      var combinedText = (lapDienVal + ' ' + lyDoVuongMac).toLowerCase();
 
+      var statusLapDat = 'Chưa lắp đặt';
       var statusDienLuc = 'Chờ Điện lực xử lý/HĐ';
-      if (lyDoVuongMac.toLowerCase().indexOf('đã đóng điện') !== -1 || lyDoVuongMac.toLowerCase().indexOf('nghiệm thu') !== -1) {
+
+      if (combinedText.indexOf('đã lắp xong') !== -1 || combinedText.indexOf('đã đóng điện') !== -1 || combinedText.indexOf('nghiệm thu') !== -1 || combinedText.indexOf('hoàn thành') !== -1) {
+        statusLapDat = 'Đã hoàn thành';
         statusDienLuc = 'Đã đóng điện';
-      } else if (lyDoVuongMac.toLowerCase().indexOf('vướng') !== -1 || lyDoVuongMac.toLowerCase().indexOf('chưa nhận') !== -1) {
+      } else if (combinedText.indexOf('vướng') !== -1 || combinedText.indexOf('chưa nhận') !== -1 || combinedText.indexOf('mặt bằng') !== -1 || combinedText.indexOf('cắt tường') !== -1) {
         statusDienLuc = 'Có vướng mắc';
+        if (combinedText.indexOf('đang') !== -1) statusLapDat = 'Đang triển khai';
+      } else if (combinedText.indexOf('đang') !== -1 || combinedText.indexOf('khảo sát') !== -1) {
+        statusLapDat = 'Đang triển khai';
+        statusDienLuc = 'Chờ Điện lực xử lý/HĐ';
       }
 
       result.push({
@@ -163,6 +161,7 @@ function getAllStationData() {
         pa_dien: paDien,
         don_vi_phu_trach: donViPhuTrach,
         is_3phase: is3Phase,
+        lap_dien: lapDienVal,
         status_lap_dat: statusLapDat,
         status_dien_luc: statusDienLuc,
         vuong_mac: lyDoVuongMac,
@@ -198,6 +197,11 @@ function updateStationData(stationId, updates) {
 
     for (var r = 1; r < values.length; r++) {
       if (String(values[r][maTramColIdx]).trim() === String(stationId).trim()) {
+        if (updates.lap_dien !== undefined || updates.status_dien_luc !== undefined) {
+          var colIdxLap = headers.indexOf('Lắp điện');
+          if (colIdxLap === -1) colIdxLap = headers.indexOf('Lắp Điện');
+          if (colIdxLap !== -1) sheet.getRange(r + 1, colIdxLap + 1).setValue(updates.lap_dien || updates.status_dien_luc);
+        }
         if (updates.vuong_mac !== undefined) {
           var colIdx = headers.indexOf('Lý do chưa triển khai lắp điện');
           if (colIdx === -1) colIdx = headers.indexOf('Vướng mắc');

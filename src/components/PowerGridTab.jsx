@@ -62,18 +62,21 @@ export default function PowerGridTab({ stations, onSelectStation }) {
 
   // Aggregate stats by power connection status
   const stats = useMemo(() => {
-    let powerDone = 0; // Đã đóng điện
+    let powerDone = 0; // Đã đóng điện / Đã lắp xong
     let pendingEVN = 0; // Chờ Điện lực khảo sát/HĐ
     let pendingDocs = 0; // Chờ hồ sơ VGREEN
     let issueDocs = 0; // Vướng mắc thủ tục
 
     filteredStations.forEach(s => {
+      const ld = (s.lap_dien || '').toLowerCase();
       const vm = (s.vuong_mac || '').toLowerCase();
-      if (vm.includes('đóng điện') || vm.includes('nghiệm thu') || vm.includes('đã hoàn thành') || s.status_dien_luc === 'Đã đóng điện') {
+      const comb = (ld + ' ' + vm).trim();
+
+      if (comb.includes('đã lắp xong') || comb.includes('đóng điện') || comb.includes('nghiệm thu') || s.status_dien_luc === 'Đã đóng điện') {
         powerDone++;
-      } else if (vm.includes('vướng') || vm.includes('chưa nhận') || vm.includes('mặt bằng') || vm.includes('cắt tường')) {
+      } else if (comb.includes('vướng') || comb.includes('chưa nhận') || comb.includes('mặt bằng') || comb.includes('cắt tường')) {
         issueDocs++;
-      } else if (vm.includes('vgreen')) {
+      } else if (comb.includes('vgreen')) {
         pendingDocs++;
       } else {
         pendingEVN++;
@@ -95,10 +98,13 @@ export default function PowerGridTab({ stations, onSelectStation }) {
       if (is3P) map[team].p3Count++;
       else map[team].p1Count++;
 
+      const ld = (s.lap_dien || '').toLowerCase();
       const vm = (s.vuong_mac || '').toLowerCase();
-      if (vm.includes('đóng điện') || vm.includes('nghiệm thu') || vm.includes('đã hoàn thành') || s.status_dien_luc === 'Đã đóng điện') {
+      const comb = (ld + ' ' + vm).trim();
+
+      if (comb.includes('đã lắp xong') || comb.includes('đóng điện') || comb.includes('nghiệm thu') || s.status_dien_luc === 'Đã đóng điện') {
         map[team].powerDone++;
-      } else if (vm.includes('vướng') || vm.includes('chưa nhận') || vm.includes('mặt bằng') || vm.includes('cắt tường')) {
+      } else if (comb.includes('vướng') || comb.includes('chưa nhận') || comb.includes('mặt bằng') || comb.includes('cắt tường')) {
         map[team].issues++;
       } else {
         map[team].pendingEVN++;
@@ -121,7 +127,7 @@ export default function PowerGridTab({ stations, onSelectStation }) {
             </div>
             <h2 className="text-xl font-extrabold text-white">Quản Lý & Theo Dõi Thủ Tục Đấu Nối Điện Lực</h2>
             <p className="text-xs text-slate-400 mt-1 max-w-2xl">
-              Phân tích chuẩn xác số liệu đấu nối điện theo từng **Đợt triển khai** và phân loại nguồn điện **Điện 3 Pha EVN / Điện 1 Pha VNPT**.
+              Phân tích chuẩn xác số liệu đấu nối điện theo từng **Đợt triển khai** và đọc cột **Lắp Điện / Ghi Chú**.
             </p>
           </div>
 
@@ -238,16 +244,16 @@ export default function PowerGridTab({ stations, onSelectStation }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="glass-card rounded-xl p-4 border-l-4 border-l-emerald-500">
           <div className="flex justify-between items-center">
-            <span className="text-xs font-bold text-slate-400 uppercase">1. Đã Đóng Điện</span>
+            <span className="text-xs font-bold text-slate-400 uppercase">1. ĐÃ ĐÓNG ĐIỆN / ĐÃ LẮP XONG</span>
             <CheckCircle2 className="w-5 h-5 text-emerald-400" />
           </div>
           <div className="text-2xl font-black text-white mt-2">{stats.powerDone} <span className="text-xs text-slate-400 font-normal">trạm</span></div>
-          <p className="text-[11px] text-emerald-400 mt-1">Đã đấu nối công tơ & vận hành</p>
+          <p className="text-[11px] text-emerald-400 mt-1">Ghi nhận cột Lắp điện "Đã lắp xong"</p>
         </div>
 
         <div className="glass-card rounded-xl p-4 border-l-4 border-l-amber-500">
           <div className="flex justify-between items-center">
-            <span className="text-xs font-bold text-slate-400 uppercase">2. Chờ HĐ / Khảo Sát EVN</span>
+            <span className="text-xs font-bold text-slate-400 uppercase">2. CHỜ HĐ / KHẢO SÁT EVN</span>
             <Clock className="w-5 h-5 text-amber-400" />
           </div>
           <div className="text-2xl font-black text-white mt-2">{stats.pendingEVN} <span className="text-xs text-slate-400 font-normal">trạm</span></div>
@@ -256,7 +262,7 @@ export default function PowerGridTab({ stations, onSelectStation }) {
 
         <div className="glass-card rounded-xl p-4 border-l-4 border-l-cyan-500">
           <div className="flex justify-between items-center">
-            <span className="text-xs font-bold text-slate-400 uppercase">3. Chờ Hồ Sơ / VGREEN</span>
+            <span className="text-xs font-bold text-slate-400 uppercase">3. CHỜ HỒ SƠ / VGREEN</span>
             <Clock className="w-5 h-5 text-cyan-400" />
           </div>
           <div className="text-2xl font-black text-white mt-2">{stats.pendingDocs} <span className="text-xs text-slate-400 font-normal">trạm</span></div>
@@ -265,7 +271,7 @@ export default function PowerGridTab({ stations, onSelectStation }) {
 
         <div className="glass-card rounded-xl p-4 border-l-4 border-l-rose-500">
           <div className="flex justify-between items-center">
-            <span className="text-xs font-bold text-slate-400 uppercase">4. Vướng Thủ Tục Cấp Điện</span>
+            <span className="text-xs font-bold text-slate-400 uppercase">4. VƯỚNG THỦ TỤC CẤP ĐIỆN</span>
             <AlertTriangle className="w-5 h-5 text-rose-400" />
           </div>
           <div className="text-2xl font-black text-white mt-2">{stats.issueDocs} <span className="text-xs text-slate-400 font-normal">trạm</span></div>

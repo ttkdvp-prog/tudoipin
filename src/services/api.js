@@ -1,4 +1,4 @@
-// Service layer for fetching data from GAS API or local offline JSON
+// Service layer for fetching data from GAS API or local offline JSON with instant 2-way sync
 
 const GAS_URL_STORAGE_KEY = 'GAS_ENDPOINT_URL';
 const DEFAULT_GAS_URL = ''; // User can set via Settings modal
@@ -55,10 +55,10 @@ export async function fetchStationsData() {
   }
 }
 
-export async function updateStationNote(stationId, newNote) {
+export async function updateStationFields(stationId, updates) {
   const gasUrl = getStoredGasUrl();
   if (!gasUrl) {
-    return { success: false, message: 'Chưa cấu hình URL Google Apps Script!' };
+    return { success: false, message: 'Chưa kết nối URL Google Apps Script! (Vui lòng chọn ⚙️ Cấu hình API)' };
   }
 
   try {
@@ -68,13 +68,13 @@ export async function updateStationNote(stationId, newNote) {
       body: JSON.stringify({
         action: 'updateStation',
         stationId: stationId,
-        updates: { vuong_mac: newNote }
+        updates: updates
       })
     });
     const json = await res.json();
     return json;
   } catch (err) {
-    console.error('Error updating station note:', err);
+    console.error('Error updating station fields:', err);
     return { success: false, message: err.toString() };
   }
 }

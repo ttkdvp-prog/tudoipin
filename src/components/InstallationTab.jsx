@@ -1,13 +1,19 @@
 import React, { useState, useMemo } from 'react';
-import { Search, Filter, Download, ChevronRight, Phone, MapPin, Wrench } from 'lucide-react';
+import { Search, Filter, Download, ChevronRight, Phone, MapPin, Wrench, Edit3 } from 'lucide-react';
 
-export default function InstallationTab({ stations, onSelectStation }) {
+export default function InstallationTab({ stations, onSelectStation, onUpdateStation }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDot, setSelectedDot] = useState('ALL');
   const [selectedTeam, setSelectedTeam] = useState('ALL');
 
-  // Filter options
-  const teams = useMemo(() => {
+  // Dynamic extraction of ALL batches (Đợt 1, Đợt 2, Đợt 3, Đợt 4...)
+  const dotsList = useMemo(() => {
+    const set = new Set(stations.map(s => s.dot).filter(Boolean));
+    return Array.from(set).sort();
+  }, [stations]);
+
+  // Dynamic extraction of teams
+  const teamsList = useMemo(() => {
     const set = new Set(stations.map(s => s.to_ht).filter(Boolean));
     return Array.from(set).sort();
   }, [stations]);
@@ -21,14 +27,14 @@ export default function InstallationTab({ stations, onSelectStation }) {
         s.to_truong.toLowerCase().includes(searchTerm.toLowerCase()) ||
         s.dia_ban.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const matchDot = selectedDot === 'ALL' || s.dot.includes(selectedDot);
+      const matchDot = selectedDot === 'ALL' || s.dot === selectedDot;
       const matchTeam = selectedTeam === 'ALL' || s.to_ht === selectedTeam;
 
       return matchSearch && matchDot && matchTeam;
     });
   }, [stations, searchTerm, selectedDot, selectedTeam]);
 
-  // Export CSV helper
+  // Export CSV
   const handleExportCSV = () => {
     const headers = ['Mã trạm', 'Đợt', 'Tổ HT', 'Tổ trưởng', 'SĐT', 'Tên cơ sở', 'Địa chỉ', 'Số lượng tủ', 'Loại tủ', 'Vướng mắc'];
     const rows = filteredStations.map(s => [
@@ -71,29 +77,30 @@ export default function InstallationTab({ stations, onSelectStation }) {
         </div>
 
         <div className="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
-          {/* Đợt Filter */}
-          <div className="flex items-center space-x-1 bg-slate-800/80 border border-slate-700 rounded-lg px-2 py-1">
+          {/* Dynamic Đợt Filter */}
+          <div className="flex items-center space-x-1 bg-slate-800/80 border border-slate-700 rounded-lg px-2.5 py-1.5">
             <Filter className="w-3.5 h-3.5 text-cyan-400" />
             <select
               value={selectedDot}
               onChange={(e) => setSelectedDot(e.target.value)}
               className="bg-transparent text-xs text-slate-200 font-medium focus:outline-none cursor-pointer"
             >
-              <option value="ALL" className="bg-slate-900">Tất cả đợt</option>
-              <option value="1" className="bg-slate-900">Đợt 1 (46 điểm)</option>
-              <option value="2" className="bg-slate-900">Đợt 2 (28 điểm)</option>
+              <option value="ALL" className="bg-slate-900">Tất cả các đợt ({dotsList.length} đợt)</option>
+              {dotsList.map(dot => (
+                <option key={dot} value={dot} className="bg-slate-900">{dot}</option>
+              ))}
             </select>
           </div>
 
-          {/* Tổ HT Filter */}
-          <div className="flex items-center space-x-1 bg-slate-800/80 border border-slate-700 rounded-lg px-2 py-1">
+          {/* Dynamic Tổ HT Filter */}
+          <div className="flex items-center space-x-1 bg-slate-800/80 border border-slate-700 rounded-lg px-2.5 py-1.5">
             <select
               value={selectedTeam}
               onChange={(e) => setSelectedTeam(e.target.value)}
               className="bg-transparent text-xs text-slate-200 font-medium focus:outline-none cursor-pointer"
             >
               <option value="ALL" className="bg-slate-900">Tất cả Tổ Hạ Tầng</option>
-              {teams.map(t => (
+              {teamsList.map(t => (
                 <option key={t} value={t} className="bg-slate-900">{t}</option>
               ))}
             </select>
@@ -122,7 +129,7 @@ export default function InstallationTab({ stations, onSelectStation }) {
                 <th className="py-3 px-4 text-center">Số Tủ & Loại Tủ</th>
                 <th className="py-3 px-4">Phương Án Điện</th>
                 <th className="py-3 px-4">Ghi Chú Vướng Mắc</th>
-                <th className="py-3 px-4 text-right">Thao Tác</th>
+                <th className="py-3 px-4 text-right">Sửa / Chi Tiết</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60">
@@ -136,12 +143,11 @@ export default function InstallationTab({ stations, onSelectStation }) {
                 filteredStations.map((station) => (
                   <tr
                     key={station.id}
-                    onClick={() => onSelectStation(station)}
-                    className="hover:bg-slate-800/50 cursor-pointer transition-colors"
+                    className="hover:bg-slate-800/50 transition-colors"
                   >
                     <td className="py-3.5 px-4">
                       <div className="font-mono font-bold text-cyan-400 text-xs">{station.ma_tram}</div>
-                      <span className="inline-block px-1.5 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400 border border-slate-700 mt-1">
+                      <span className="inline-block px-1.5 py-0.5 rounded text-[10px] bg-slate-800 text-slate-300 border border-slate-700 mt-1 font-semibold">
                         {station.dot}
                       </span>
                     </td>
@@ -183,13 +189,11 @@ export default function InstallationTab({ stations, onSelectStation }) {
                     </td>
                     <td className="py-3.5 px-4 text-right">
                       <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onSelectStation(station);
-                        }}
-                        className="p-1.5 hover:bg-slate-700 rounded text-slate-400 hover:text-white transition-colors"
+                        onClick={() => onSelectStation(station)}
+                        className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 rounded-lg text-xs font-semibold inline-flex items-center space-x-1 transition-colors"
                       >
-                        <ChevronRight className="w-4 h-4" />
+                        <Edit3 className="w-3.5 h-3.5" />
+                        <span>Sửa thông số</span>
                       </button>
                     </td>
                   </tr>

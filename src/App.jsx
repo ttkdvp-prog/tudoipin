@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './components/Navbar';
 import OverviewTab from './components/OverviewTab';
 import InstallationTab from './components/InstallationTab';
@@ -7,7 +7,7 @@ import BottlenecksTab from './components/BottlenecksTab';
 import MapTab from './components/MapTab';
 import StationDetailModal from './components/StationDetailModal';
 import SettingsModal from './components/SettingsModal';
-import { fetchStationsData } from './services/api';
+import { fetchStationsData, updateStationFields } from './services/api';
 import { RefreshCw } from 'lucide-react';
 
 export default function App() {
@@ -18,9 +18,11 @@ export default function App() {
   const [lastUpdated, setLastUpdated] = useState(null);
   const [selectedStation, setSelectedStation] = useState(null);
   const [showSettings, setShowSettings] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
 
-  const loadData = async () => {
-    setLoading(true);
+  const loadData = async (silent = false) => {
+    if (!silent) setLoading(true);
+    setIsSyncing(true);
     try {
       const res = await fetchStationsData();
       setStations(res.data || []);
@@ -29,13 +31,42 @@ export default function App() {
     } catch (err) {
       console.error('Error loading stations data:', err);
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
+      setIsSyncing(false);
     }
   };
 
+  // Initial load + 15s Auto Polling sync for instant two-way updates
   useEffect(() => {
     loadData();
+    const interval = setInterval(() => {
+      loadData(true);
+    }, 15000);
+    return () => clearInterval(interval);
   }, []);
+
+  // Handler for optimistic local update + API sync
+  const handleUpdateStationLocally = async (stationId, updates) => {
+    // 1. Optimistic update
+    setStations(prev => prev.map(s => {
+      if (s.id === stationId || s.ma_tram === stationId) {
+        return { ...s, ...updates };
+      }
+      return s;
+    }));
+
+    if (selectedStation && (selectedStation.id === stationId || selectedStation.ma_tram === stationId)) {
+      setSelectedStation(prev => ({ ...prev, ...updates }));
+    }
+
+    // 2. Async sync to Google Sheet
+    const res = await updateStationFields(stationId, updates);
+    if (res && res.status === 'success') {
+      loadData(true); // silent refetch
+      return { success: true };
+    }
+    return { success: false, message: res ? res.message : 'Lỗi kết nối' };
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100">
@@ -44,9 +75,10 @@ export default function App() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         dataSource={dataSource}
-        onRefresh={loadData}
+        onRefresh={() => loadData(false)}
         onOpenSettings={() => setShowSettings(true)}
         lastUpdated={lastUpdated}
+        isSyncing={isSyncing}
       />
 
       {/* Main Content Area */}
@@ -54,35 +86,54 @@ export default function App() {
         {loading ? (
           <div className="flex flex-col items-center justify-center h-96 space-y-4">
             <RefreshCw className="w-8 h-8 text-cyan-400 animate-spin" />
-            <p className="text-xs text-slate-400 font-medium">Đang tải dữ liệu tiến độ trạm tủ đổi pin...</p>
+            <p className="text-xs text-slate-400 font-medium">Đang đồng bộ dữ liệu trạm tủ đổi pin...</p>
           </div>
         ) : (
           <>
             {activeTab === 'overview' && (
-              <OverviewTab stations={stations} onSelectStation={setSelectedStation} />
+              <OverviewTab
+                stations={stations}
+                onSelectStation={setSelectedStation}
+                onUpdateStation={handleUpdateStationLocally}
+              />
             )}
             {activeTab === 'installation' && (
-              <InstallationTab stations={stations} onSelectStation={setSelectedStation} />
+              <InstallationTab
+                stations={stations}
+                onSelectStation={setSelectedStation}
+                onUpdateStation={handleUpdateStationLocally}
+              />
             )}
             {activeTab === 'power' && (
-              <PowerGridTab stations={stations} onSelectStation={setSelectedStation} />
+              <PowerGridTab
+                stations={stations}
+                onSelectStation={setSelectedStation}
+                onUpdateStation={handleUpdateStationLocally}
+              />
             )}
             {activeTab === 'bottlenecks' && (
-              <BottlenecksTab stations={stations} onSelectStation={setSelectedStation} />
+              <BottlenecksTab
+                stations={stations}
+                onSelectStation={setSelectedStation}
+                onUpdateStation={handleUpdateStationLocally}
+              />
             )}
             {activeTab === 'map' && (
-              <MapTab stations={stations} onSelectStation={setSelectedStation} />
+              <MapTab
+                stations={stations}
+                onSelectStation={setSelectedStation}
+              />
             )}
           </>
         )}
       </main>
 
-      {/* Station Detail Modal Popup */}
+      {/* Station Detail Modal Popup (Full parameters editor) */}
       {selectedStation && (
         <StationDetailModal
           station={selectedStation}
           onClose={() => setSelectedStation(null)}
-          onRefreshData={loadData}
+          onUpdateStation={handleUpdateStationLocally}
         />
       )}
 
@@ -90,13 +141,13 @@ export default function App() {
       {showSettings && (
         <SettingsModal
           onClose={() => setShowSettings(false)}
-          onSaveSuccess={loadData}
+          onSaveSuccess={() => loadData(false)}
         />
       )}
 
       {/* Footer */}
       <footer className="border-t border-slate-900 bg-slate-950 py-4 text-center text-xs text-slate-500">
-        Dashboard Quản Lý Lắp Đặt Tủ Đổi Pin & Tiến Độ Điện Lực EVN • Sẵn sàng đẩy GitHub & Deploy Vercel
+        Dashboard Tủ Đổi Pin • Đồng Bộ 2 Chiều Tức Thì Google Sheet & GitHub Repo: ttkdvp-prog/tudoipin
       </footer>
     </div>
   );

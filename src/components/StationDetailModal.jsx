@@ -1,27 +1,44 @@
 import React, { useState } from 'react';
-import { X, MapPin, User, Phone, Wrench, Zap, AlertTriangle, Save, CheckCircle2 } from 'lucide-react';
-import { updateStationNote } from '../services/api';
+import { X, MapPin, User, Phone, Wrench, Zap, AlertTriangle, Save, CheckCircle2, RefreshCw } from 'lucide-react';
 
-export default function StationDetailModal({ station, onClose, onRefreshData }) {
+export default function StationDetailModal({ station, onClose, onUpdateStation }) {
   if (!station) return null;
 
-  const [vuongMacNote, setVuongMacNote] = useState(station.vuong_mac || '');
+  // Form state for all station parameters
+  const [formData, setFormData] = useState({
+    dot: station.dot || '',
+    to_ht: station.to_ht || '',
+    to_truong: station.to_truong || '',
+    sdt: station.sdt || '',
+    so_luong_tu: station.so_luong_tu || 2,
+    loai_tu: station.loai_tu || 'TĐP 12 ngăn',
+    pa_dien: station.pa_dien || 'Điện EVN 3P',
+    vuong_mac: station.vuong_mac || ''
+  });
+
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState(null);
 
-  const handleSaveNote = async () => {
+  const handleChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSave = async () => {
     setIsSaving(true);
     setMessage(null);
+
     try {
-      const res = await updateStationNote(station.id, vuongMacNote);
-      if (res && res.status === 'success') {
-        setMessage({ type: 'success', text: 'Đã lưu vướng mắc thành công lên Google Sheet!' });
-        if (onRefreshData) onRefreshData();
+      const res = await onUpdateStation(station.id || station.ma_tram, formData);
+      if (res && res.success !== false) {
+        setMessage({ type: 'success', text: 'Đã lưu & đồng bộ tức thì lên Google Sheet!' });
+        setTimeout(() => {
+          onClose();
+        }, 1200);
       } else {
-        setMessage({ type: 'error', text: res.message || 'Chưa thể lưu lên Apps Script (Vui lòng kiểm tra URL API).' });
+        setMessage({ type: 'error', text: res.message || 'Không thể lưu lên Google Sheet. Kiểm tra lại URL API.' });
       }
     } catch (err) {
-      setMessage({ type: 'error', text: 'Lỗi kết nối: ' + err.toString() });
+      setMessage({ type: 'error', text: 'Lỗi: ' + err.toString() });
     } finally {
       setIsSaving(false);
     }
@@ -29,7 +46,7 @@ export default function StationDetailModal({ station, onClose, onRefreshData }) 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
-      <div className="glass-modal w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl border border-slate-700/80">
+      <div className="glass-modal w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl border border-slate-700">
         {/* Modal Header */}
         <div className="bg-slate-800/80 px-6 py-4 flex items-center justify-between border-b border-slate-700">
           <div className="flex items-center space-x-3">
@@ -38,7 +55,7 @@ export default function StationDetailModal({ station, onClose, onRefreshData }) 
             </div>
             <div>
               <h3 className="text-base font-bold text-white">{station.ten_co_so}</h3>
-              <p className="text-xs text-slate-400">{station.dot} • {station.to_ht}</p>
+              <p className="text-xs text-slate-400">{station.dia_chi || station.dia_ban}</p>
             </div>
           </div>
 
@@ -50,93 +67,135 @@ export default function StationDetailModal({ station, onClose, onRefreshData }) 
           </button>
         </div>
 
-        {/* Modal Body */}
-        <div className="p-6 space-y-5 max-h-[80vh] overflow-y-auto">
-          {/* Info Grid */}
+        {/* Modal Body: Editable Form */}
+        <div className="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+          {/* Grid fields */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center mb-1">
-                <MapPin className="w-3.5 h-3.5 mr-1 text-cyan-400" /> Vị Trí & Địa Chỉ
-              </span>
-              <p className="text-xs font-semibold text-slate-200">{station.dia_chi || 'Chưa ghi nhận địa chỉ'}</p>
-              <p className="text-xs text-slate-400 mt-0.5">{station.phuong_xa} - {station.dia_ban}</p>
+            {/* Đợt */}
+            <div>
+              <label className="text-xs font-bold text-slate-300 block mb-1">Đợt Triển Khai</label>
+              <input
+                type="text"
+                value={formData.dot}
+                onChange={(e) => handleChange('dot', e.target.value)}
+                className="w-full p-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:border-cyan-500"
+              />
             </div>
 
-            <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center mb-1">
-                <User className="w-3.5 h-3.5 mr-1 text-emerald-400" /> Cán Bộ Phụ Trách
-              </span>
-              <p className="text-xs font-semibold text-slate-200">{station.to_truong || 'Chưa phân công'}</p>
-              {station.sdt && (
-                <p className="text-xs text-cyan-400 font-mono flex items-center mt-0.5">
-                  <Phone className="w-3 h-3 mr-1" /> {station.sdt}
-                </p>
-              )}
+            {/* Tổ HT */}
+            <div>
+              <label className="text-xs font-bold text-slate-300 block mb-1">Tổ Hạ Tầng</label>
+              <input
+                type="text"
+                value={formData.to_ht}
+                onChange={(e) => handleChange('to_ht', e.target.value)}
+                className="w-full p-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:border-cyan-500"
+              />
             </div>
 
-            <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center mb-1">
-                <Wrench className="w-3.5 h-3.5 mr-1 text-purple-400" /> Quy Mô Tủ Đổi Pin
-              </span>
-              <p className="text-xs font-semibold text-slate-200">{station.so_luong_tu} Tủ ({station.loai_tu})</p>
-              <p className="text-xs text-slate-400 mt-0.5">Chiều dài cáp nguồn: ~{station.so_met_day || 30} mét</p>
+            {/* Tổ trưởng */}
+            <div>
+              <label className="text-xs font-bold text-slate-300 block mb-1">Tổ Trưởng Phụ Trách</label>
+              <input
+                type="text"
+                value={formData.to_truong}
+                onChange={(e) => handleChange('to_truong', e.target.value)}
+                className="w-full p-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:border-cyan-500"
+              />
             </div>
 
-            <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center mb-1">
-                <Zap className="w-3.5 h-3.5 mr-1 text-amber-400" /> Phương Án Cấp Điện
-              </span>
-              <p className="text-xs font-semibold text-slate-200">{station.pa_dien || 'Điện EVN 3P'}</p>
-              <p className="text-xs text-slate-400 mt-0.5">Đơn vị: {station.don_vi_phu_trach}</p>
+            {/* SĐT */}
+            <div>
+              <label className="text-xs font-bold text-slate-300 block mb-1">SĐT Tổ Trưởng</label>
+              <input
+                type="text"
+                value={formData.sdt}
+                onChange={(e) => handleChange('sdt', e.target.value)}
+                className="w-full p-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:border-cyan-500 font-mono"
+              />
+            </div>
+
+            {/* Số lượng tủ */}
+            <div>
+              <label className="text-xs font-bold text-slate-300 block mb-1">Số Lượng Tủ Đổi Pin</label>
+              <input
+                type="number"
+                min="1"
+                max="10"
+                value={formData.so_luong_tu}
+                onChange={(e) => handleChange('so_luong_tu', parseInt(e.target.value, 10) || 1)}
+                className="w-full p-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:border-cyan-500"
+              />
+            </div>
+
+            {/* Loại tủ */}
+            <div>
+              <label className="text-xs font-bold text-slate-300 block mb-1">Loại Tủ</label>
+              <select
+                value={formData.loai_tu}
+                onChange={(e) => handleChange('loai_tu', e.target.value)}
+                className="w-full p-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:border-cyan-500"
+              >
+                <option value="TĐP 6 ngăn">TĐP 6 ngăn</option>
+                <option value="TĐP 12 ngăn">TĐP 12 ngăn</option>
+                <option value="TĐP 18 ngăn">TĐP 18 ngăn</option>
+              </select>
             </div>
           </div>
 
-          {/* Edit Vuong Mac Box */}
-          <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-700/80 space-y-3">
-            <div className="flex items-center justify-between">
-              <label className="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center">
-                <AlertTriangle className="w-4 h-4 mr-1.5" /> Ghi Chú & Chi Tiết Vướng Mắc (Đồng Bộ Google Sheet)
-              </label>
-              <span className="text-[10px] text-slate-400">Có thể chỉnh sửa trực tiếp</span>
-            </div>
+          {/* Phương án điện */}
+          <div>
+            <label className="text-xs font-bold text-slate-300 block mb-1">Phương Án Cấp Điện</label>
+            <input
+              type="text"
+              value={formData.pa_dien}
+              onChange={(e) => handleChange('pa_dien', e.target.value)}
+              className="w-full p-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:border-cyan-500"
+            />
+          </div>
 
+          {/* Vướng mắc & Ghi chú */}
+          <div>
+            <label className="text-xs font-bold text-amber-400 block mb-1 flex items-center">
+              <AlertTriangle className="w-3.5 h-3.5 mr-1" /> Chi Tiết Vướng Mắc & Ghi Chú Tiến Độ
+            </label>
             <textarea
               rows="3"
-              value={vuongMacNote}
-              onChange={(e) => setVuongMacNote(e.target.value)}
-              placeholder="Nhập nội dung vướng mắc, trở ngại hoặc tiến độ xử lý hiện tại..."
-              className="w-full p-3 bg-slate-950 border border-slate-700 rounded-lg text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+              value={formData.vuong_mac}
+              onChange={(e) => handleChange('vuong_mac', e.target.value)}
+              placeholder="Nhập nội dung vướng mắc, trở ngại hoặc tiến độ xử lý..."
+              className="w-full p-3 bg-slate-950 border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:border-amber-500"
             />
-
-            {message && (
-              <div className={`p-2.5 rounded text-xs font-medium ${
-                message.type === 'success' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
-              }`}>
-                {message.text}
-              </div>
-            )}
-
-            <div className="flex justify-end">
-              <button
-                onClick={handleSaveNote}
-                disabled={isSaving}
-                className="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-bold rounded-lg text-xs flex items-center space-x-1.5 transition-all shadow-md shadow-amber-500/20 disabled:opacity-50"
-              >
-                <Save className="w-4 h-4" />
-                <span>{isSaving ? 'Đang lưu...' : 'Lưu Thay Đổi Này'}</span>
-              </button>
-            </div>
           </div>
+
+          {message && (
+            <div className={`p-3 rounded-lg text-xs font-medium ${
+              message.type === 'success' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
+            }`}>
+              {message.text}
+            </div>
+          )}
         </div>
 
-        {/* Modal Footer */}
-        <div className="bg-slate-900 px-6 py-3 border-t border-slate-800 flex justify-end">
-          <button
-            onClick={onClose}
-            className="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-lg text-xs transition-colors"
-          >
-            Đóng
-          </button>
+        {/* Footer actions */}
+        <div className="bg-slate-900 px-6 py-3 border-t border-slate-800 flex items-center justify-between">
+          <span className="text-[11px] text-slate-400">Thay đổi sẽ đồng bộ 2 chiều tức thì về Google Sheet</span>
+          <div className="flex space-x-2">
+            <button
+              onClick={onClose}
+              className="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-lg text-xs transition-colors"
+            >
+              Hủy
+            </button>
+            <button
+              onClick={handleSave}
+              disabled={isSaving}
+              className="px-4 py-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold rounded-lg text-xs flex items-center space-x-1.5 transition-all shadow-md shadow-cyan-500/20 disabled:opacity-50"
+            >
+              <Save className="w-4 h-4" />
+              <span>{isSaving ? 'Đang đồng bộ...' : 'Lưu Thay Đổi'}</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

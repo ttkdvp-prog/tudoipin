@@ -17,6 +17,16 @@ import {
   Activity
 } from 'lucide-react';
 
+const EVE_33_IDS = new Set([
+  "V.E.PTH13628", "V.E.PTH13629", "V.E.PTH13630", "V.E.PTH13632", "V.E.PTH13635",
+  "V.E.PTH13638", "V.E.PTH13639", "V.E.PTH13644", "V.E.PTH13645", "V.E.PTH13647",
+  "V.E.PTH13650", "V.E.PTH13651", "V.E.PTH13654", "V.E.PTH13655", "V.E.PTH13656",
+  "V.E.PTH13658", "V.E.PTH13659", "V.E.PTH13661", "V.E.PTH13662", "V.E.PTH13671",
+  "V.E.PTH13674", "V.E.PTH13675", "V.E.PTH13677", "V.E.PTH14857", "V.E.PTH14859",
+  "V.E.PTH14861", "V.E.PTH14862", "V.E.PTH14869", "V.E.PTH14890", "V.E.PTH14892",
+  "V.E.PTH14928", "V.E.PTH14929", "V.E.PTH14931"
+]);
+
 export default function EveProgressTab({ stations, onSelectStation, onUpdateStation }) {
   const [selectedDot, setSelectedDot] = useState('ALL'); // 'ALL', 'đợt 1', 'đợt 2'
   const [selectedTeam, setSelectedTeam] = useState('ALL');
@@ -26,37 +36,43 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
   // Inline editing state
   const [editingRows, setEditingRows] = useState({});
 
-  // 1. Filter EVE 33 Stations scope (strictly EVN 3-Phase only, excluding VNPT 1-Phase)
+  // 1. Filter EVE 33 Stations scope (strictly 33 EVN 3-Phase stations: 23 Đợt 1 + 10 Đợt 2)
   const eveStations = useMemo(() => {
     return stations.filter(s => {
-      const pa = (s.pa_dien || '').toUpperCase();
-      const isVnpt = pa.includes('VNPT') || pa.includes('1P') || s.is_3phase === false || s.is_eve === false;
-      if (isVnpt) return false;
-
-      if (s.is_eve === true) return true;
-      const dotVal = (s.eve_dot || s.dot || '').toLowerCase();
-      const isDot1 = dotVal.includes('1');
-      const isDot2 = dotVal.includes('2');
-      return isDot1 || isDot2;
+      const ma = (s.ma_tram || s.id || '').trim();
+      if (EVE_33_IDS.has(ma)) return true;
+      return s.is_eve === true && s.is_3phase !== false;
     });
   }, [stations]);
 
   // 2. Count by Batch (Đợt 1 = 23, Đợt 2 = 10)
   const dot1Count = useMemo(() => {
-    return eveStations.filter(s => (s.eve_dot === 'đợt 1' || s.dot === 'đợt 1')).length;
+    return eveStations.filter(s => {
+      const ma = (s.ma_tram || s.id || '').trim();
+      const dotVal = (s.eve_dot || s.dot || '').toLowerCase();
+      return dotVal.includes('1') || s.sheetSource === '46 điểm' || ma.startsWith('V.E.PTH13');
+    }).length;
   }, [eveStations]);
 
   const dot2Count = useMemo(() => {
-    return eveStations.filter(s => (s.eve_dot === 'đợt 2' || s.dot === 'đợt 2')).length;
+    return eveStations.filter(s => {
+      const ma = (s.ma_tram || s.id || '').trim();
+      const dotVal = (s.eve_dot || s.dot || '').toLowerCase();
+      return dotVal.includes('2') || s.sheetSource === '28 điểm' || ma.startsWith('V.E.PTH14');
+    }).length;
   }, [eveStations]);
 
   // 3. Filtered stations
   const filteredEveStations = useMemo(() => {
     return eveStations.filter(s => {
-      const dotVal = s.eve_dot || s.dot || '';
+      const ma = (s.ma_tram || s.id || '').trim();
+      const dotVal = (s.eve_dot || s.dot || '').toLowerCase();
+      const isDot1 = dotVal.includes('1') || s.sheetSource === '46 điểm' || ma.startsWith('V.E.PTH13');
+      const isDot2 = dotVal.includes('2') || s.sheetSource === '28 điểm' || ma.startsWith('V.E.PTH14');
+
       const matchDot = selectedDot === 'ALL' ||
-        (selectedDot === 'đợt 1' && dotVal.includes('1')) ||
-        (selectedDot === 'đợt 2' && dotVal.includes('2'));
+        (selectedDot === 'đợt 1' && isDot1) ||
+        (selectedDot === 'đợt 2' && isDot2 && !isDot1);
 
       const matchTeam = selectedTeam === 'ALL' || s.to_ht === selectedTeam;
 

@@ -230,29 +230,29 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
   return (
     <div className="space-y-6">
       {/* Top Banner: Overview Header */}
-      <div className="glass-card rounded-2xl p-5 relative overflow-hidden bg-gradient-to-r from-[#171b3d] via-[#1a1c47] to-[#21163e] border border-purple-500/30 shadow-2xl">
+      <div className="glass-card rounded-2xl p-5 relative overflow-hidden bg-gradient-to-r from-[#0b152b] via-[#0f1d3a] to-[#091124] border border-blue-500/25 shadow-2xl">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 relative z-10">
           <div>
-            <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-purple-950/80 text-purple-300 border border-purple-500/40 mb-2">
-              <Zap className="w-3.5 h-3.5 mr-1.5 text-purple-400" />
+            <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-950/80 text-blue-300 border border-blue-500/30 mb-2">
+              <Zap className="w-3.5 h-3.5 mr-1.5 text-blue-400" />
               BÁO CÁO TIẾN ĐỘ LẮP TỦ ĐỔI PIN EVE (EVN 3 PHA)
             </div>
             <h2 className="text-xl md:text-2xl font-black text-white tracking-tight">
               Theo Dõi Tiến Độ Lắp Tủ Đổi Pin Của EVE Theo Tổ Hạ Tầng
             </h2>
-            <p className="text-xs text-slate-200 mt-1 max-w-3xl leading-relaxed">
-              Theo dõi chi tiết <strong className="text-purple-300">33 trạm EVE</strong> (Đợt 1: <strong className="text-indigo-300">23 trạm</strong> | Đợt 2: <strong className="text-emerald-300">10 trạm</strong>). Cho phép cập nhật trực tiếp trạng thái <strong className="text-indigo-200">Lắp điện</strong> và <strong className="text-purple-200">Lý do chưa triển khai</strong>.
+            <p className="text-xs text-slate-300 mt-1 max-w-3xl leading-relaxed">
+              Theo dõi chi tiết <strong className="text-blue-300">33 trạm EVE</strong> (Đợt 1: <strong className="text-sky-300">23 trạm</strong> | Đợt 2: <strong className="text-emerald-300">10 trạm</strong>). Cho phép cập nhật trực tiếp trạng thái <strong className="text-blue-200">Lắp điện</strong> và <strong className="text-slate-200">Lý do chưa triển khai</strong>.
             </p>
           </div>
 
           {/* Batch Selector Pills */}
-          <div className="flex items-center space-x-2 bg-[#10142b] p-1.5 rounded-xl border border-purple-900/40 shrink-0">
+          <div className="flex items-center space-x-2 bg-[#060c18] p-1.5 rounded-xl border border-blue-900/40 shrink-0">
             <button
               onClick={() => setSelectedDot('ALL')}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 selectedDot === 'ALL'
-                  ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white shadow-md shadow-purple-600/25 border border-purple-400/40'
-                  : 'text-slate-400 hover:text-white hover:bg-purple-950/40'
+                  ? 'bg-gradient-to-r from-blue-700 to-indigo-600 text-white shadow-md shadow-blue-500/20 border border-blue-400/30'
+                  : 'text-slate-400 hover:text-white hover:bg-blue-950/40'
               }`}
             >
               Tất Cả (33 trạm)
@@ -261,8 +261,8 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
               onClick={() => setSelectedDot('đợt 1')}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 selectedDot === 'đợt 1'
-                  ? 'bg-indigo-700 text-white border border-indigo-400/40 shadow-md shadow-indigo-500/20'
-                  : 'text-slate-400 hover:text-white hover:bg-purple-950/40'
+                  ? 'bg-blue-800 text-white border border-blue-400/40 shadow-md shadow-blue-500/20'
+                  : 'text-slate-400 hover:text-white hover:bg-blue-950/40'
               }`}
             >
               Đợt 1 ({dot1Count} trạm)
@@ -272,7 +272,7 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 selectedDot === 'đợt 2'
                   ? 'bg-emerald-800/90 text-white border border-emerald-400/40 shadow-md'
-                  : 'text-slate-400 hover:text-white hover:bg-purple-950/40'
+                  : 'text-slate-400 hover:text-white hover:bg-blue-950/40'
               }`}
             >
               Đợt 2 ({dot2Count} trạm)
@@ -283,54 +283,54 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
 
       {/* KPI Cards: Power BI Metric Card Style */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="glass-card rounded-xl p-4 border border-purple-500/25 bg-[#171b3d]/90">
-          <div className="flex justify-between items-center text-xs font-semibold text-purple-300 uppercase tracking-wider">
+        <div className="glass-card rounded-xl p-4 border border-blue-500/20 bg-[#0c162c]/90">
+          <div className="flex justify-between items-center text-xs font-semibold text-slate-400 uppercase tracking-wider">
             <span>TỔNG SỐ TRẠM EVE</span>
-            <Activity className="w-4 h-4 text-purple-400" />
+            <Activity className="w-4 h-4 text-blue-400" />
           </div>
           <div className="text-3xl font-black text-white mt-2 tracking-tight">
-            {stats.total} <span className="text-xs font-normal text-slate-300">trạm</span>
+            {stats.total} <span className="text-xs font-normal text-slate-400">trạm</span>
           </div>
-          <div className="text-[11px] text-purple-300/80 mt-1 font-medium">
+          <div className="text-[11px] text-blue-300/80 mt-1 font-medium">
             Phạm vi đang lọc
           </div>
         </div>
 
-        <div className="glass-card rounded-xl p-4 border border-emerald-500/30 bg-[#12282e]/90">
+        <div className="glass-card rounded-xl p-4 border border-emerald-500/25 bg-[#0a1c24]/90">
           <div className="flex justify-between items-center text-xs font-semibold text-emerald-400 uppercase tracking-wider">
             <span>1. ĐÃ LẮP XONG / ĐÓNG ĐIỆN</span>
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
           </div>
           <div className="text-3xl font-black text-emerald-300 mt-2 tracking-tight">
-            {stats.done} <span className="text-xs font-normal text-slate-300">trạm</span>
+            {stats.done} <span className="text-xs font-normal text-slate-400">trạm</span>
           </div>
           <div className="text-[11px] text-emerald-400/80 mt-1 font-medium">
             Đã hoàn thành thủ tục đấu nối
           </div>
         </div>
 
-        <div className="glass-card rounded-xl p-4 border border-indigo-500/30 bg-[#162045]/90">
-          <div className="flex justify-between items-center text-xs font-semibold text-indigo-300 uppercase tracking-wider">
+        <div className="glass-card rounded-xl p-4 border border-blue-500/25 bg-[#0d1a33]/90">
+          <div className="flex justify-between items-center text-xs font-semibold text-blue-300 uppercase tracking-wider">
             <span>2. CHỜ EVN SOẠN HĐ / KHẢO SÁT</span>
-            <Clock className="w-4 h-4 text-indigo-400" />
+            <Clock className="w-4 h-4 text-blue-400" />
           </div>
-          <div className="text-3xl font-black text-indigo-200 mt-2 tracking-tight">
-            {stats.pending} <span className="text-xs font-normal text-slate-300">trạm</span>
+          <div className="text-3xl font-black text-blue-200 mt-2 tracking-tight">
+            {stats.pending} <span className="text-xs font-normal text-slate-400">trạm</span>
           </div>
-          <div className="text-[11px] text-indigo-300/80 mt-1 font-medium">
+          <div className="text-[11px] text-blue-400/80 mt-1 font-medium">
             Đang tiến hành theo đúng thủ tục
           </div>
         </div>
 
-        <div className="glass-card rounded-xl p-4 border border-purple-500/30 bg-[#251b3d]/90">
-          <div className="flex justify-between items-center text-xs font-semibold text-purple-300 uppercase tracking-wider">
+        <div className="glass-card rounded-xl p-4 border border-amber-500/25 bg-[#1a1721]/90">
+          <div className="flex justify-between items-center text-xs font-semibold text-amber-300 uppercase tracking-wider">
             <span>3. CÓ VƯỚNG MẮC / CHỜ MẶT BẰNG</span>
-            <AlertTriangle className="w-4 h-4 text-purple-400" />
+            <AlertTriangle className="w-4 h-4 text-amber-400" />
           </div>
-          <div className="text-3xl font-black text-purple-200 mt-2 tracking-tight">
-            {stats.issue} <span className="text-xs font-normal text-slate-300">trạm</span>
+          <div className="text-3xl font-black text-amber-200 mt-2 tracking-tight">
+            {stats.issue} <span className="text-xs font-normal text-slate-400">trạm</span>
           </div>
-          <div className="text-[11px] text-purple-300/80 mt-1 font-medium">
+          <div className="text-[11px] text-amber-400/80 mt-1 font-medium">
             Cần hỗ trợ phối hợp xử lý
           </div>
         </div>

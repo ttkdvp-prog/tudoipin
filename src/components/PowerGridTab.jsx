@@ -372,16 +372,16 @@ export default function PowerGridTab({ stations, onSelectStation, onUpdateStatio
 
         <div
           onClick={() => setSelectedStatus(prev => prev === 'ISSUE' ? 'ALL' : 'ISSUE')}
-          className={`glass-card glass-card-hover rounded-xl p-4 cursor-pointer border-l-4 border-l-rose-500 transition-all ${
-            selectedStatus === 'ISSUE' ? 'ring-2 ring-rose-500 bg-rose-950/30' : ''
+          className={`glass-card glass-card-hover rounded-xl p-4 cursor-pointer border-l-4 border-l-amber-500 transition-all ${
+            selectedStatus === 'ISSUE' ? 'ring-2 ring-amber-500 bg-amber-950/30' : ''
           }`}
         >
           <div className="flex justify-between items-center">
             <span className="text-xs font-bold text-slate-400 uppercase">4. VƯỚNG THỦ TỤC CẤP ĐIỆN</span>
-            <AlertTriangle className="w-5 h-5 text-rose-400" />
+            <AlertTriangle className="w-5 h-5 text-amber-400" />
           </div>
           <div className="text-2xl font-black text-white mt-2">{stats.issueDocs} <span className="text-xs text-slate-400 font-normal">trạm</span></div>
-          <p className="text-[11px] text-rose-400 mt-1">Cần hỗ trợ xử lý tồn lại/vướng mắc</p>
+          <p className="text-[11px] text-amber-400 mt-1">Cần hỗ trợ xử lý tồn lại/vướng mắc</p>
         </div>
       </div>
 
@@ -545,13 +545,13 @@ export default function PowerGridTab({ stations, onSelectStation, onUpdateStatio
                           powerCat === 'DONE'
                             ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
                             : powerCat === 'ISSUE'
-                            ? 'bg-rose-500/15 text-rose-300 border-rose-500/30'
+                            ? 'bg-amber-950/60 text-amber-300 border-amber-500/30'
                             : powerCat === 'PENDING_DOCS'
-                            ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30'
-                            : 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+                            ? 'bg-blue-950/60 text-blue-300 border-blue-500/30'
+                            : 'bg-amber-950/40 text-amber-200 border-amber-500/20'
                         }`}>
                           {powerCat === 'DONE' && <CheckCircle2 className="w-3.5 h-3.5 mr-1 text-emerald-400 shrink-0" />}
-                          {powerCat === 'ISSUE' && <AlertTriangle className="w-3.5 h-3.5 mr-1 text-rose-400 shrink-0" />}
+                          {powerCat === 'ISSUE' && <AlertTriangle className="w-3.5 h-3.5 mr-1 text-amber-400 shrink-0" />}
                           {powerCat === 'PENDING_EVN' && <Clock className="w-3.5 h-3.5 mr-1 text-amber-400 shrink-0" />}
                           {powerCat === 'PENDING_DOCS' && <Clock className="w-3.5 h-3.5 mr-1 text-cyan-400 shrink-0" />}
                           <span className="truncate">{statusText}</span>

@@ -70,7 +70,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100">
+    <div className="min-h-screen flex flex-col bg-[#060b17] text-slate-100 selection:bg-blue-600 selection:text-white">
       {/* Navigation Top Header */}
       <Navbar
         activeTab={activeTab}
@@ -86,7 +86,7 @@ export default function App() {
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {loading ? (
           <div className="flex flex-col items-center justify-center h-96 space-y-4">
-            <RefreshCw className="w-8 h-8 text-cyan-400 animate-spin" />
+            <RefreshCw className="w-8 h-8 text-blue-400 animate-spin" />
             <p className="text-xs text-slate-400 font-medium">Đang đồng bộ dữ liệu trạm tủ đổi pin...</p>
           </div>
         ) : (
@@ -136,7 +136,7 @@ export default function App() {
         )}
       </main>
 
-      {/* Station Detail Modal Popup (Full parameters editor) */}
+      {/* Station Detail Modal Popup */}
       {selectedStation && (
         <StationDetailModal
           station={selectedStation}
@@ -154,8 +154,8 @@ export default function App() {
       )}
 
       {/* Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950 py-4 text-center text-xs text-slate-500">
-        Dashboard Tủ Đổi Pin • Đồng Bộ 2 Chiều Tức Thì Google Sheet & GitHub Repo: ttkdvp-prog/tudoipin
+      <footer className="border-t border-blue-950/80 bg-[#040812] py-4 text-center text-xs text-slate-500 font-medium">
+        Power BI Enterprise Dashboard • Đồng Bộ 2 Chiều Tức Thì Google Sheet & GitHub Repo: ttkdvp-prog/tudoipin
       </footer>
     </div>
   );

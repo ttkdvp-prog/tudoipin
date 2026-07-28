@@ -98,11 +98,7 @@ function getAllStationData() {
       var lapDienVal = colLapDien !== -1 ? String(row[colLapDien] || '').trim() : '';
 
       var colLyDo = findColIndex(headers, ['lý do chưa triển khai', 'vướng mắc']);
-      var colGhiChu = findColIndex(headers, ['ghi chú', 'ghi chu']);
-
-      var lyDoVal = colLyDo !== -1 ? String(row[colLyDo] || '').trim() : '';
-      var ghiChuVal = colGhiChu !== -1 ? String(row[colGhiChu] || '').trim() : '';
-      var lyDoVuongMac = lyDoVal || ghiChuVal;
+      var lyDoVuongMac = colLyDo !== -1 ? String(row[colLyDo] || '').trim() : '';
 
       var colDV = findColIndex(headers, ['đơn vị điện lực', 'điện lực']);
       var donViDienLucVal = colDV !== -1 ? String(row[colDV] || '').trim() : '';
@@ -220,15 +216,12 @@ function updateStationData(stationId, updates) {
           if (colLap !== -1) sheet.getRange(r + 1, colLap + 1).setValue(valLap);
         }
 
-        // 2. Vướng mắc / Lý do / Ghi chú (XÓA & CẬP NHẬT CẢ CỘT S LẪN CỘT X)
+        // 2. Vướng mắc / Lý do (CHỈ GHI VÀO CỘT LÝ DO CHƯA TRIỂN KHAI LẮP ĐIỆN)
         if (updates.vuong_mac !== undefined) {
           var valVuong = updates.vuong_mac || '';
           
           var colLyDo = findColIndex(headers, ['lý do chưa triển khai', 'vướng mắc']);
           if (colLyDo !== -1) sheet.getRange(r + 1, colLyDo + 1).setValue(valVuong);
-
-          var colGhiChu = findColIndex(headers, ['ghi chú', 'ghi chu', 'note']);
-          if (colGhiChu !== -1) sheet.getRange(r + 1, colGhiChu + 1).setValue(valVuong);
         }
 
         // 3. Đơn vị điện lực

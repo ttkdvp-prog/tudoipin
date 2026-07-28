@@ -579,7 +579,7 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
                         {(() => {
                           const val = (rowEditState.lap_dien || '').trim();
                           const lower = val.toLowerCase();
-                          let styleClass = 'bg-[#0b1324] text-slate-400 italic border border-slate-700/80 hover:border-slate-500 font-medium';
+                          let styleClass = 'bg-[#060b18]/60 text-slate-500/80 italic border border-slate-800/80 hover:border-blue-500/50 hover:text-slate-300 font-normal';
                           
                           if (lower.includes('lắp xong') || lower.includes('đóng điện') || lower.includes('nghiệm thu') || lower.includes('hoàn thành')) {
                             styleClass = 'bg-emerald-950/90 text-emerald-300 border-2 border-emerald-500 font-extrabold shadow-md shadow-emerald-500/25 ring-2 ring-emerald-500/30';
@@ -595,8 +595,8 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
                               onChange={(e) => handleInlineChange(stationId, 'lap_dien', e.target.value)}
                               className={`w-full p-2 rounded-lg text-xs focus:outline-none transition-all duration-200 cursor-pointer ${styleClass}`}
                             >
-                              <option value="" className="bg-[#0b132b] text-slate-400 italic font-normal">
-                                ⚪ Chưa xong (Click để chọn)
+                              <option value="" className="bg-[#0b132b] text-slate-500 italic font-normal">
+                                Chưa xong
                               </option>
                               <option value="Đã lắp xong" className="bg-[#0b132b] text-emerald-400 font-bold">
                                 ✅ Đã lắp xong (Hoàn thành)

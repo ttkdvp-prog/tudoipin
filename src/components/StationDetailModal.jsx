@@ -13,6 +13,7 @@ export default function StationDetailModal({ station, onClose, onUpdateStation }
     so_luong_tu: station.so_luong_tu || 2,
     loai_tu: station.loai_tu || 'TĐP 12 ngăn',
     pa_dien: station.pa_dien || 'Điện EVN 3P',
+    lap_dien: station.lap_dien || '',
     vuong_mac: station.vuong_mac || ''
   });
 
@@ -151,6 +152,20 @@ export default function StationDetailModal({ station, onClose, onUpdateStation }
               value={formData.pa_dien}
               onChange={(e) => handleChange('pa_dien', e.target.value)}
               className="w-full p-2 bg-slate-950 border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:border-cyan-500"
+            />
+          </div>
+
+          {/* Lắp điện */}
+          <div>
+            <label className="text-xs font-bold text-cyan-400 block mb-1 flex items-center">
+              <Zap className="w-3.5 h-3.5 mr-1 text-cyan-400" /> Trạng Thái Lắp Điện (Cột Lắp Điện)
+            </label>
+            <input
+              type="text"
+              value={formData.lap_dien}
+              onChange={(e) => handleChange('lap_dien', e.target.value)}
+              placeholder="Nhập trạng thái lắp điện (ví dụ: Đã lắp xong, Điện lực đã khảo sát và soạn HĐ...)"
+              className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-lg text-xs text-cyan-200 focus:outline-none focus:border-cyan-500"
             />
           </div>
 

@@ -23,7 +23,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13628",
@@ -49,7 +50,9 @@
     "vuong_mac": "Đã khảo sát xong, chờ hợp đồng điện lực gửi",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13629",
@@ -75,7 +78,9 @@
     "vuong_mac": "Điện lực đã khảo sát và soạn HĐ",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13630",
@@ -101,7 +106,9 @@
     "vuong_mac": "hồ sơ gửi VGREEN, chưa nhận lại để gửi điện lực khảo sát",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 50
+    "so_met_day": 50,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13631",
@@ -127,7 +134,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 50
+    "so_met_day": 50,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13632",
@@ -153,7 +161,9 @@
     "vuong_mac": "hồ sơ gửi VGREEN, chưa nhận lại để gửi điện lực khảo sát",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 35
+    "so_met_day": 35,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13633",
@@ -179,7 +189,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 55
+    "so_met_day": 55,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13634",
@@ -205,7 +216,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 50
+    "so_met_day": 50,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13635",
@@ -231,7 +243,9 @@
     "vuong_mac": "Điện lực đã khảo sát và đang chờ Soạn HĐ",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13638",
@@ -257,7 +271,9 @@
     "vuong_mac": "Điện lực đã khảo sát và đang chờ Soạn HĐ",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 25
+    "so_met_day": 25,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13639",
@@ -283,7 +299,9 @@
     "vuong_mac": "Điện lực đã khảo sát và đang chờ LĐ",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 35
+    "so_met_day": 35,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13642",
@@ -309,7 +327,8 @@
     "vuong_mac": "",
     "so_luong_tu": 4,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 50
+    "so_met_day": 50,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13643",
@@ -335,7 +354,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 140
+    "so_met_day": 140,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13644",
@@ -361,7 +381,9 @@
     "vuong_mac": "Đã gửi toàn bộ giấy tờ liên quan cho Điện lực chờ phản hồi",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 55
+    "so_met_day": 55,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13645",
@@ -387,7 +409,9 @@
     "vuong_mac": "Đã gửi toàn bộ giấy tờ liên quan cho Điện lực chờ phản hồi",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 20
+    "so_met_day": 20,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13646",
@@ -413,7 +437,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 55
+    "so_met_day": 55,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13647",
@@ -439,7 +464,9 @@
     "vuong_mac": "Đã khảo sát xong, chờ hợp đồng điện lực gửi",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 100
+    "so_met_day": 100,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13648",
@@ -465,7 +492,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 95
+    "so_met_day": 95,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13649",
@@ -491,7 +519,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 55
+    "so_met_day": 55,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13650",
@@ -517,7 +546,9 @@
     "vuong_mac": "Điện lực đã khảo sát và đang chờ LĐ",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 25
+    "so_met_day": 25,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13651",
@@ -543,7 +574,9 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 50
+    "so_met_day": 50,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13654",
@@ -569,7 +602,9 @@
     "vuong_mac": "Điện lực đã khảo sát và đang chờ LĐ",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 25
+    "so_met_day": 25,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13655",
@@ -595,7 +630,9 @@
     "vuong_mac": "Điện lực đã khảo sát và đang chờ LĐ",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13656",
@@ -621,7 +658,9 @@
     "vuong_mac": "Điện lực đã khảo sát và đang chờ LĐ",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 28
+    "so_met_day": 28,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13658",
@@ -647,7 +686,9 @@
     "vuong_mac": "Điện lực đang Trình ban LĐ và khảo sát",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 25
+    "so_met_day": 25,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13659",
@@ -673,7 +714,9 @@
     "vuong_mac": "Điện lực đang Trình ban LĐ và khảo sát",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 25
+    "so_met_day": 25,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13660",
@@ -699,7 +742,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 20
+    "so_met_day": 20,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13661",
@@ -725,7 +769,9 @@
     "vuong_mac": "Điện lực đã khảo sát và soạn HĐ",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 40
+    "so_met_day": 40,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13662",
@@ -751,7 +797,9 @@
     "vuong_mac": "Điện lực đã khảo sát và soạn HĐ",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 20
+    "so_met_day": 20,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13664",
@@ -777,7 +825,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 40
+    "so_met_day": 40,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13670",
@@ -803,7 +852,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 45
+    "so_met_day": 45,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13671",
@@ -829,7 +879,9 @@
     "vuong_mac": "hồ sơ gửi VGREEN, chưa nhận lại để gửi điện lực khảo sát",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 25
+    "so_met_day": 25,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13672",
@@ -855,7 +907,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13674",
@@ -881,7 +934,9 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 20
+    "so_met_day": 20,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13675",
@@ -907,7 +962,9 @@
     "vuong_mac": "Đã khảo sát xong, chờ hợp đồng điện lực gửi",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13677",
@@ -933,7 +990,9 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 20
+    "so_met_day": 20,
+    "is_eve": true,
+    "eve_dot": "đợt 1"
   },
   {
     "id": "V.E.PTH13679",
@@ -959,7 +1018,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 50
+    "so_met_day": 50,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13680",
@@ -985,7 +1045,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 60
+    "so_met_day": 60,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13681",
@@ -1011,7 +1072,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 85
+    "so_met_day": 85,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13682",
@@ -1037,7 +1099,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 35
+    "so_met_day": 35,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13683",
@@ -1063,7 +1126,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 35
+    "so_met_day": 35,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13685",
@@ -1089,7 +1153,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 25
+    "so_met_day": 25,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13686",
@@ -1115,7 +1180,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13687",
@@ -1141,7 +1207,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 85
+    "so_met_day": 85,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13688",
@@ -1167,7 +1234,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 65
+    "so_met_day": 65,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH13689",
@@ -1193,7 +1261,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH14857",
@@ -1219,7 +1288,9 @@
     "vuong_mac": "",
     "so_luong_tu": 3,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": true,
+    "eve_dot": "đợt 2"
   },
   {
     "id": "V.E.PTH14859",
@@ -1245,7 +1316,9 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": true,
+    "eve_dot": "đợt 2"
   },
   {
     "id": "V.E.PTH14861",
@@ -1271,7 +1344,9 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": true,
+    "eve_dot": "đợt 2"
   },
   {
     "id": "V.E.PTH14862",
@@ -1297,7 +1372,9 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": true,
+    "eve_dot": "đợt 2"
   },
   {
     "id": "V.E.PTH14863",
@@ -1323,7 +1400,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH14865",
@@ -1349,7 +1427,8 @@
     "vuong_mac": "",
     "so_luong_tu": 3,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH14866",
@@ -1375,7 +1454,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH14869",
@@ -1401,7 +1481,9 @@
     "vuong_mac": "",
     "so_luong_tu": 4,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": true,
+    "eve_dot": "đợt 2"
   },
   {
     "id": "V.E.PTH14871",
@@ -1427,7 +1509,8 @@
     "vuong_mac": "",
     "so_luong_tu": 1,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH14877",
@@ -1453,7 +1536,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH14878",
@@ -1479,7 +1563,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH14879",
@@ -1505,7 +1590,8 @@
     "vuong_mac": "Cắt tường",
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH14880",
@@ -1531,7 +1617,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH14883",
@@ -1557,7 +1644,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH14885",
@@ -1583,7 +1671,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH14886",
@@ -1609,7 +1698,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH14887",
@@ -1635,7 +1725,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH14890",
@@ -1661,7 +1752,9 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": true,
+    "eve_dot": "đợt 2"
   },
   {
     "id": "V.E.PTH14891",
@@ -1687,7 +1780,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH14892",
@@ -1713,7 +1807,9 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": true,
+    "eve_dot": "đợt 2"
   },
   {
     "id": "V.E.PTH14894",
@@ -1739,7 +1835,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH14895",
@@ -1765,7 +1862,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH14926",
@@ -1791,7 +1889,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH14927",
@@ -1817,7 +1916,8 @@
     "vuong_mac": "",
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   },
   {
     "id": "V.E.PTH14928",
@@ -1843,7 +1943,9 @@
     "vuong_mac": "Cắt tường",
     "so_luong_tu": 3,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": true,
+    "eve_dot": "đợt 2"
   },
   {
     "id": "V.E.PTH14929",
@@ -1869,7 +1971,9 @@
     "vuong_mac": "Cắt tường",
     "so_luong_tu": 5,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": true,
+    "eve_dot": "đợt 2"
   },
   {
     "id": "V.E.PTH14931",
@@ -1895,7 +1999,9 @@
     "vuong_mac": "Cắt tường",
     "so_luong_tu": 5,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": true,
+    "eve_dot": "đợt 2"
   },
   {
     "id": "V.E.PTH14932",
@@ -1921,6 +2027,7 @@
     "vuong_mac": "",
     "so_luong_tu": 3,
     "loai_tu": "6 ngăn",
-    "so_met_day": 30
+    "so_met_day": 30,
+    "is_eve": false
   }
 ]

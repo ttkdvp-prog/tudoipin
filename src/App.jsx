@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './components/Navbar';
 import OverviewTab from './components/OverviewTab';
+import EveProgressTab from './components/EveProgressTab';
 import InstallationTab from './components/InstallationTab';
 import PowerGridTab from './components/PowerGridTab';
 import BottlenecksTab from './components/BottlenecksTab';
@@ -11,7 +12,7 @@ import { fetchStationsData, updateStationFields } from './services/api';
 import { RefreshCw } from 'lucide-react';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState('eve');
   const [stations, setStations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [dataSource, setDataSource] = useState('local');
@@ -92,6 +93,13 @@ export default function App() {
           <>
             {activeTab === 'overview' && (
               <OverviewTab
+                stations={stations}
+                onSelectStation={setSelectedStation}
+                onUpdateStation={handleUpdateStationLocally}
+              />
+            )}
+            {activeTab === 'eve' && (
+              <EveProgressTab
                 stations={stations}
                 onSelectStation={setSelectedStation}
                 onUpdateStation={handleUpdateStationLocally}

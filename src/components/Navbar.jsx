@@ -4,6 +4,7 @@ import { LayoutDashboard, Wrench, Zap, AlertTriangle, MapPin, Settings, RefreshC
 export default function Navbar({ activeTab, setActiveTab, dataSource, onRefresh, onOpenSettings, lastUpdated }) {
   const tabs = [
     { id: 'overview', label: 'Tổng Quan', icon: LayoutDashboard },
+    { id: 'eve', label: 'Tiến Độ Tủ EVE (33 trạm)', icon: Zap },
     { id: 'installation', label: 'Tiến Độ Lắp Tủ Pin', icon: Wrench },
     { id: 'power', label: 'Thống Kê Điện Lực EVN', icon: Zap },
     { id: 'bottlenecks', label: 'Báo Cáo Vướng Mắc', icon: AlertTriangle },

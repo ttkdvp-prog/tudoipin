@@ -158,19 +158,19 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
   };
 
   // 7. Save inline edits
-  const handleSaveInline = async (station) => {
+  const handleSaveInline = async (station, overrideData = null) => {
     const stationId = station.id || station.ma_tram;
     const editData = editingRows[stationId];
-    if (!editData || !editData.isDirty) return;
+    if (!editData && !overrideData) return;
 
     setEditingRows(prev => ({
       ...prev,
-      [stationId]: { ...prev[stationId], isSaving: true }
+      [stationId]: { ...(prev[stationId] || {}), isSaving: true }
     }));
 
     const updates = {
-      lap_dien: editData.lap_dien,
-      vuong_mac: editData.vuong_mac
+      lap_dien: overrideData?.lap_dien !== undefined ? overrideData.lap_dien : (editData?.lap_dien ?? station.lap_dien ?? ''),
+      vuong_mac: overrideData?.vuong_mac !== undefined ? overrideData.vuong_mac : (editData?.vuong_mac ?? station.vuong_mac ?? '')
     };
 
     const res = await onUpdateStation(stationId, updates);
@@ -178,7 +178,7 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
     setEditingRows(prev => ({
       ...prev,
       [stationId]: {
-        ...prev[stationId],
+        ...(prev[stationId] || {}),
         isSaving: false,
         isDirty: false,
         savedSuccess: true
@@ -592,7 +592,14 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
                           return (
                             <select
                               value={rowEditState.lap_dien || ''}
-                              onChange={(e) => handleInlineChange(stationId, 'lap_dien', e.target.value)}
+                              onChange={(e) => {
+                                const newval = e.target.value;
+                                handleInlineChange(stationId, 'lap_dien', newval);
+                                // Auto save immediately on selection change
+                                setTimeout(() => {
+                                  handleSaveInline(station, { lap_dien: newval });
+                                }, 50);
+                              }}
                               className={`w-full p-2 rounded-lg text-xs focus:outline-none transition-all duration-200 cursor-pointer ${styleClass}`}
                             >
                               <option value="" className="bg-[#0b132b] text-slate-500 italic font-normal">
@@ -625,8 +632,13 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
                       <td className="py-2.5 px-3">
                         <textarea
                           rows="2"
-                          value={rowEditState.vuong_mac}
+                          value={rowEditState.vuong_mac || ''}
                           onChange={(e) => handleInlineChange(stationId, 'vuong_mac', e.target.value)}
+                          onBlur={() => {
+                            if (isDirty) {
+                              handleSaveInline(station);
+                            }
+                          }}
                           placeholder="Lý do chưa triển khai / vướng mắc..."
                           className="w-full p-2 bg-[#060c18] border border-blue-900/60 hover:border-blue-500/60 focus:border-blue-400 rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:outline-none transition-colors leading-relaxed"
                         />

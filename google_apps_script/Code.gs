@@ -205,10 +205,15 @@ function updateStationData(stationId, updates) {
           if (colIdxLap !== -1) sheet.getRange(r + 1, colIdxLap + 1).setValue(updates.lap_dien || updates.status_dien_luc);
         }
         if (updates.vuong_mac !== undefined) {
-          var colIdx = headers.indexOf('Lý do chưa triển khai lắp điện');
-          if (colIdx === -1) colIdx = headers.indexOf('Vướng mắc');
-          if (colIdx === -1) colIdx = headers.indexOf('Ghi Chú');
-          if (colIdx !== -1) sheet.getRange(r + 1, colIdx + 1).setValue(updates.vuong_mac);
+          var valVuong = updates.vuong_mac || '';
+          
+          var colIdxLyDo = headers.indexOf('Lý do chưa triển khai lắp điện');
+          if (colIdxLyDo === -1) colIdxLyDo = headers.indexOf('Vướng mắc');
+          if (colIdxLyDo !== -1) sheet.getRange(r + 1, colIdxLyDo + 1).setValue(valVuong);
+
+          var colIdxGhiChu = headers.indexOf('Ghi Chú');
+          if (colIdxGhiChu === -1) colIdxGhiChu = headers.indexOf('Ghi chú');
+          if (colIdxGhiChu !== -1) sheet.getRange(r + 1, colIdxGhiChu + 1).setValue(valVuong);
         }
         if (updates.so_luong_tu !== undefined) {
           var colIdxTu = headers.indexOf('Số lượng TĐP');

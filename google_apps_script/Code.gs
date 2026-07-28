@@ -136,6 +136,31 @@ function getAllStationData() {
         statusDienLuc = 'Có vướng mắc';
       }
 
+      var colPa = findColIndex(headers, ['pa điện', 'pa điện', 'phương án điện']);
+      var colEvnMark = findColIndex(headers, ['điện lực', 'evn']);
+      var colVnptMark = findColIndex(headers, ['điện vnpt', 'vnpt']);
+
+      var paVal = colPa !== -1 ? String(row[colPa] || '').trim().toUpperCase() : '';
+      var isEvn = colEvnMark !== -1 && String(row[colEvnMark] || '').trim().toLowerCase() === 'x';
+      var isVnpt = colVnptMark !== -1 && String(row[colVnpt] || '').trim().toLowerCase() === 'x';
+
+      var paDien = 'Điện EVN 3P';
+      var donViPhuTrach = 'Điện Lực';
+      var is3Phase = true;
+      var isEve = true;
+
+      if (isVnpt || paVal.indexOf('1P') !== -1 || paVal.indexOf('VNPT') !== -1 || paVal.indexOf('1 PHA') !== -1) {
+        paDien = 'Điện VNPT 1P';
+        donViPhuTrach = 'VNPT';
+        is3Phase = false;
+        isEve = false;
+      } else if (isEvn || paVal.indexOf('3P') !== -1 || paVal.indexOf('EVN') !== -1 || paVal.indexOf('3 PHA') !== -1) {
+        paDien = 'Điện EVN 3P';
+        donViPhuTrach = 'Điện Lực';
+        is3Phase = true;
+        isEve = true;
+      }
+
       result.push({
         id: maTram,
         sheetSource: sheetName,
@@ -148,10 +173,11 @@ function getAllStationData() {
         sdt: sdtVal,
         ten_co_so: tenCoSoVal,
         dia_chi: diaChiVal,
-        pa_dien: 'Điện EVN 3P',
-        don_vi_phu_trach: 'Điện Lực',
+        pa_dien: paDien,
+        don_vi_phu_trach: donViPhuTrach,
         don_vi_dien_luc: donViDienLucVal || ('Điện lực ' + toHtVal),
-        is_3phase: true,
+        is_3phase: is3Phase,
+        is_eve: isEve,
         lap_dien: lapDienVal,
         status_lap_dat: statusLapDat,
         status_dien_luc: statusDienLuc,

@@ -26,13 +26,18 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
   // Inline editing state
   const [editingRows, setEditingRows] = useState({});
 
-  // 1. Filter EVE 33 Stations scope
+  // 1. Filter EVE 33 Stations scope (strictly EVN 3-Phase only, excluding VNPT 1-Phase)
   const eveStations = useMemo(() => {
     return stations.filter(s => {
-      if (s.is_eve !== undefined) return s.is_eve;
-      const isDot1_23 = s.dot === 'đợt 1' && (s.is_3phase || (s.pa_dien || '').includes('3P'));
-      const isDot2_10 = s.dot === 'đợt 2' && (s.is_3phase || (s.pa_dien || '').includes('3P'));
-      return isDot1_23 || isDot2_10;
+      const pa = (s.pa_dien || '').toUpperCase();
+      const isVnpt = pa.includes('VNPT') || pa.includes('1P') || s.is_3phase === false || s.is_eve === false;
+      if (isVnpt) return false;
+
+      if (s.is_eve === true) return true;
+      const dotVal = (s.eve_dot || s.dot || '').toLowerCase();
+      const isDot1 = dotVal.includes('1');
+      const isDot2 = dotVal.includes('2');
+      return isDot1 || isDot2;
     });
   }, [stations]);
 

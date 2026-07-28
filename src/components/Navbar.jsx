@@ -51,14 +51,6 @@ export default function Navbar({ activeTab, setActiveTab, dataSource, onRefresh,
             >
               <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin text-cyan-400' : ''}`} />
             </button>
-
-            <button
-              onClick={onOpenSettings}
-              className="px-3 py-1.5 text-xs font-semibold text-slate-200 hover:text-white bg-blue-950/60 hover:bg-blue-900/80 rounded-lg transition-all border border-blue-700/40 flex items-center space-x-1.5 shadow-sm"
-            >
-              <Settings className="w-3.5 h-3.5 text-blue-400" />
-              <span className="hidden sm:inline">Cấu hình API</span>
-            </button>
           </div>
         </div>
 

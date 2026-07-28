@@ -154,8 +154,8 @@ export default function App() {
       )}
 
       {/* Footer */}
-      <footer className="border-t border-blue-900/40 bg-[#0b1324] py-4 text-center text-xs text-slate-400 font-medium">
-        Power BI Enterprise Dashboard • Đồng Bộ 2 Chiều Tức Thì Google Sheet & GitHub Repo: ttkdvp-prog/tudoipin
+      <footer className="border-t border-blue-900/40 bg-[#0b1324] py-3 text-center text-xs text-slate-500">
+        Hệ thống Quản lý Tiến độ Tủ Đổi Pin
       </footer>
     </div>
   );

@@ -31,12 +31,12 @@ export default function StationDetailModal({ station, onClose, onUpdateStation }
     try {
       const res = await onUpdateStation(station.id || station.ma_tram, formData);
       if (res && res.success !== false) {
-        setMessage({ type: 'success', text: 'Đã lưu & đồng bộ tức thì lên Google Sheet!' });
+        setMessage({ type: 'success', text: 'Đã lưu & đồng bộ dữ liệu tức thì!' });
         setTimeout(() => {
           onClose();
         }, 1200);
       } else {
-        setMessage({ type: 'error', text: res.message || 'Không thể lưu lên Google Sheet. Kiểm tra lại URL API.' });
+        setMessage({ type: 'error', text: res.message || 'Không thể lưu dữ liệu. Kiểm tra lại URL API.' });
       }
     } catch (err) {
       setMessage({ type: 'error', text: 'Lỗi: ' + err.toString() });
@@ -194,7 +194,7 @@ export default function StationDetailModal({ station, onClose, onUpdateStation }
 
         {/* Footer actions */}
         <div className="bg-slate-900 px-6 py-3 border-t border-slate-800 flex items-center justify-between">
-          <span className="text-[11px] text-slate-400">Thay đổi sẽ đồng bộ 2 chiều tức thì về Google Sheet</span>
+          <span className="text-[11px] text-slate-400">Thay đổi sẽ đồng bộ 2 chiều tức thì về hệ thống</span>
           <div className="flex space-x-2">
             <button
               onClick={onClose}

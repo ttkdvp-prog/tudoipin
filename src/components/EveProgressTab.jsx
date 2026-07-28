@@ -681,7 +681,7 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
             Hiển thị <strong className="text-white">{filteredEveStations.length}</strong> / <strong className="text-blue-300">33 trạm EVE</strong>
           </div>
           <div className="text-[11px] text-slate-500">
-            Tự động đồng bộ 2 chiều dữ liệu lên Google Sheet
+            Tự động đồng bộ 2 chiều dữ liệu thời gian thực
           </div>
         </div>
       </div>

@@ -56,7 +56,7 @@ export default function SettingsModal({ onClose, onSaveSuccess }) {
         {/* Body */}
         <div className="p-6 space-y-4">
           <p className="text-xs text-slate-300 leading-relaxed">
-            Nhập Web App URL sau khi bạn đã triển khai ứng dụng web trên <strong>Google Apps Script</strong> từ file Google Sheet để đồng bộ tiến độ thời gian thực.
+            Nhập Web App URL sau khi bạn đã triển khai ứng dụng web trên <strong>Google Apps Script</strong> để đồng bộ tiến độ thời gian thực.
           </p>
 
           <div className="space-y-1.5">

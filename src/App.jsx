@@ -60,7 +60,7 @@ export default function App() {
       setSelectedStation(prev => ({ ...prev, ...updates }));
     }
 
-    // 2. Async sync to Google Sheet
+    // 2. Async sync via API
     const res = await updateStationFields(stationId, updates);
     if (res && res.status === 'success') {
       loadData(true); // silent refetch

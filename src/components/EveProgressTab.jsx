@@ -199,7 +199,7 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
   // 8. Export CSV
   const handleExportCSV = () => {
     const headers = [
-      'STT', 'Đợt', 'Mã trạm', 'Tên trạm / Tên cơ sở', 'Địa chỉ',
+      'STT', 'Đợt', 'Mã trạm', 'Tên trạm / Tên cơ sở', 'Đơn vị điện lực',
       'Tổ Hạ Tầng', 'Tổ trưởng', 'SĐT', 'Lắp điện', 'Lý do chưa triển khai lắp điện'
     ];
 
@@ -208,7 +208,7 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
       `"${s.eve_dot || s.dot || ''}"`,
       `"${s.ma_tram || ''}"`,
       `"${(s.ten_co_so || '').replace(/"/g, '""')}"`,
-      `"${(s.dia_chi || s.phuong_xa || s.dia_ban || '').replace(/"/g, '""')}"`,
+      `"${(s.don_vi_dien_luc || ('Điện lực ' + (s.to_ht || ''))).replace(/"/g, '""')}"`,
       `"${s.to_ht || ''}"`,
       `"${s.to_truong || ''}"`,
       `"${s.sdt || ''}"`,
@@ -507,7 +507,7 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
                 <th className="py-3 px-3 text-center w-10">STT</th>
                 <th className="py-3 px-4 w-36">Mã Trạm / Đợt</th>
                 <th className="py-3 px-4 min-w-[190px]">Tên Cơ Sở</th>
-                <th className="py-3 px-4 min-w-[180px]">Địa Chỉ</th>
+                <th className="py-3 px-4 min-w-[180px]">Đơn Vị Điện Lực</th>
                 <th className="py-3 px-4 w-36">Tổ Hạ Tầng</th>
                 <th className="py-3 px-4 min-w-[180px]">
                   <span className="text-blue-300 font-bold">Lắp Điện ✏️</span>
@@ -562,8 +562,8 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
                       </td>
 
                       <td className="py-3 px-4">
-                        <div className="text-[11px] text-slate-400 leading-snug">
-                          {station.dia_chi || station.phuong_xa || station.dia_ban || 'N/A'}
+                        <div className="text-[11px] text-blue-300 font-medium leading-snug">
+                          {station.don_vi_dien_luc || ('Điện lực ' + (station.to_ht || station.dia_ban || ''))}
                         </div>
                       </td>
 

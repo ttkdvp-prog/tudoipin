@@ -125,6 +125,7 @@ function getAllStationData() {
 
       var lapDienVal = String(rowObj['Lắp điện'] || rowObj['Lắp Điện'] || '').trim();
       var lyDoVuongMac = String(rowObj['Lý do chưa triển khai lắp điện'] || rowObj['Vướng mắc'] || rowObj['Ghi Chú'] || '').trim();
+      var donViDienLucVal = String(rowObj['Đơn vị điện lực'] || rowObj['Đơn vị Điện Lực'] || rowObj['Đơn vị điện lực '] || '').trim();
 
       var combinedText = (lapDienVal + ' ' + lyDoVuongMac).toLowerCase();
 
@@ -160,6 +161,7 @@ function getAllStationData() {
         lng: parseFloat(rowObj['LONG'] || rowObj['Long']) || null,
         pa_dien: paDien,
         don_vi_phu_trach: donViPhuTrach,
+        don_vi_dien_luc: donViDienLucVal || ('Điện lực ' + String(rowObj['Tổ HT'] || rowObj['Tổ hạ tầng'] || '').trim()),
         is_3phase: is3Phase,
         lap_dien: lapDienVal,
         status_lap_dat: statusLapDat,
@@ -225,6 +227,11 @@ function updateStationData(stationId, updates) {
           var colIdxSDT = headers.indexOf('SĐT tổ trưởng');
           if (colIdxSDT === -1) colIdxSDT = headers.indexOf('SĐT');
           if (colIdxSDT !== -1) sheet.getRange(r + 1, colIdxSDT + 1).setValue(updates.sdt);
+        }
+        if (updates.don_vi_dien_luc !== undefined) {
+          var colIdxDV = headers.indexOf('Đơn vị điện lực');
+          if (colIdxDV === -1) colIdxDV = headers.indexOf('Đơn vị Điện Lực');
+          if (colIdxDV !== -1) sheet.getRange(r + 1, colIdxDV + 1).setValue(updates.don_vi_dien_luc);
         }
         return { updatedRow: r + 1, sheet: sheet.getName() };
       }

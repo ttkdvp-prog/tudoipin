@@ -24,7 +24,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Tân Lạc"
   },
   {
     "id": "V.E.PTH13628",
@@ -52,7 +53,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 30,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Tân Lạc"
   },
   {
     "id": "V.E.PTH13629",
@@ -80,7 +82,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 30,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Tam Đảo"
   },
   {
     "id": "V.E.PTH13630",
@@ -108,7 +111,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 50,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Thanh Ba"
   },
   {
     "id": "V.E.PTH13631",
@@ -135,7 +139,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 50,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Thanh Ba"
   },
   {
     "id": "V.E.PTH13632",
@@ -163,7 +168,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 35,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Thanh Ba"
   },
   {
     "id": "V.E.PTH13633",
@@ -190,7 +196,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 55,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Vĩnh Yên"
   },
   {
     "id": "V.E.PTH13634",
@@ -217,7 +224,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 50,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Vĩnh Yên"
   },
   {
     "id": "V.E.PTH13635",
@@ -245,7 +253,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 30,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Vĩnh Yên"
   },
   {
     "id": "V.E.PTH13638",
@@ -273,7 +282,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 25,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Vĩnh Yên"
   },
   {
     "id": "V.E.PTH13639",
@@ -301,7 +311,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 35,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Tam Đảo"
   },
   {
     "id": "V.E.PTH13642",
@@ -328,7 +339,8 @@
     "so_luong_tu": 4,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 50,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Lạc Sơn"
   },
   {
     "id": "V.E.PTH13643",
@@ -355,7 +367,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 140,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Thanh Sơn"
   },
   {
     "id": "V.E.PTH13644",
@@ -383,7 +396,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 55,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Hòa Bình"
   },
   {
     "id": "V.E.PTH13645",
@@ -411,7 +425,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 20,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Hòa Bình"
   },
   {
     "id": "V.E.PTH13646",
@@ -438,7 +453,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 55,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Hòa Bình"
   },
   {
     "id": "V.E.PTH13647",
@@ -466,7 +482,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 100,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Tân Lạc"
   },
   {
     "id": "V.E.PTH13648",
@@ -493,7 +510,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 95,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Tân Lạc"
   },
   {
     "id": "V.E.PTH13649",
@@ -520,7 +538,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 55,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Hòa Bình"
   },
   {
     "id": "V.E.PTH13650",
@@ -548,7 +567,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 25,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Tam Đảo"
   },
   {
     "id": "V.E.PTH13651",
@@ -576,7 +596,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 50,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Vĩnh Yên"
   },
   {
     "id": "V.E.PTH13654",
@@ -604,7 +625,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 25,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Tam Đảo"
   },
   {
     "id": "V.E.PTH13655",
@@ -632,7 +654,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 30,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Tam Đảo"
   },
   {
     "id": "V.E.PTH13656",
@@ -660,7 +683,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 28,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Tam Đảo"
   },
   {
     "id": "V.E.PTH13658",
@@ -688,7 +712,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 25,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Phúc Yên"
   },
   {
     "id": "V.E.PTH13659",
@@ -716,7 +741,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 25,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Phúc Yên"
   },
   {
     "id": "V.E.PTH13660",
@@ -743,7 +769,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 20,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Phúc Yên"
   },
   {
     "id": "V.E.PTH13661",
@@ -771,7 +798,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 40,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Phúc Yên"
   },
   {
     "id": "V.E.PTH13662",
@@ -799,7 +827,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 20,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Phúc Yên"
   },
   {
     "id": "V.E.PTH13664",
@@ -826,7 +855,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 40,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Hòa Bình"
   },
   {
     "id": "V.E.PTH13670",
@@ -853,7 +883,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 45,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Việt Trì"
   },
   {
     "id": "V.E.PTH13671",
@@ -881,7 +912,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 25,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Việt Trì"
   },
   {
     "id": "V.E.PTH13672",
@@ -908,7 +940,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Việt Trì"
   },
   {
     "id": "V.E.PTH13674",
@@ -936,7 +969,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 20,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Lương Sơn"
   },
   {
     "id": "V.E.PTH13675",
@@ -964,7 +998,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 30,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Thanh Sơn"
   },
   {
     "id": "V.E.PTH13677",
@@ -992,7 +1027,8 @@
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 20,
     "is_eve": true,
-    "eve_dot": "đợt 1"
+    "eve_dot": "đợt 1",
+    "don_vi_dien_luc": "Điện lực Lương Sơn"
   },
   {
     "id": "V.E.PTH13679",
@@ -1019,7 +1055,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 50,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Lương Sơn"
   },
   {
     "id": "V.E.PTH13680",
@@ -1046,7 +1083,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 60,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Lương Sơn"
   },
   {
     "id": "V.E.PTH13681",
@@ -1073,7 +1111,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 85,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Hòa Bình"
   },
   {
     "id": "V.E.PTH13682",
@@ -1100,7 +1139,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 35,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Việt Trì"
   },
   {
     "id": "V.E.PTH13683",
@@ -1127,7 +1167,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 35,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Việt Trì"
   },
   {
     "id": "V.E.PTH13685",
@@ -1154,7 +1195,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 25,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Việt Trì"
   },
   {
     "id": "V.E.PTH13686",
@@ -1181,7 +1223,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Việt Trì"
   },
   {
     "id": "V.E.PTH13687",
@@ -1208,7 +1251,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 85,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Việt Trì"
   },
   {
     "id": "V.E.PTH13688",
@@ -1235,7 +1279,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 65,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Hòa Bình"
   },
   {
     "id": "V.E.PTH13689",
@@ -1262,7 +1307,8 @@
     "so_luong_tu": 2,
     "loai_tu": "TĐP 12 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Việt Trì"
   },
   {
     "id": "V.E.PTH14857",
@@ -1290,7 +1336,8 @@
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
     "is_eve": true,
-    "eve_dot": "đợt 2"
+    "eve_dot": "đợt 2",
+    "don_vi_dien_luc": "Điện lực Hòa Bình"
   },
   {
     "id": "V.E.PTH14859",
@@ -1318,7 +1365,8 @@
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
     "is_eve": true,
-    "eve_dot": "đợt 2"
+    "eve_dot": "đợt 2",
+    "don_vi_dien_luc": "Điện lực Tân Lạc"
   },
   {
     "id": "V.E.PTH14861",
@@ -1346,7 +1394,8 @@
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
     "is_eve": true,
-    "eve_dot": "đợt 2"
+    "eve_dot": "đợt 2",
+    "don_vi_dien_luc": "Điện lực Tân Lạc"
   },
   {
     "id": "V.E.PTH14862",
@@ -1374,7 +1423,8 @@
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
     "is_eve": true,
-    "eve_dot": "đợt 2"
+    "eve_dot": "đợt 2",
+    "don_vi_dien_luc": "Điện lực Tân Lạc"
   },
   {
     "id": "V.E.PTH14863",
@@ -1401,7 +1451,8 @@
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Lương Sơn"
   },
   {
     "id": "V.E.PTH14865",
@@ -1428,7 +1479,8 @@
     "so_luong_tu": 3,
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Lương Sơn"
   },
   {
     "id": "V.E.PTH14866",
@@ -1455,7 +1507,8 @@
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Lương Sơn"
   },
   {
     "id": "V.E.PTH14869",
@@ -1483,7 +1536,8 @@
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
     "is_eve": true,
-    "eve_dot": "đợt 2"
+    "eve_dot": "đợt 2",
+    "don_vi_dien_luc": "Điện lực Thanh Sơn"
   },
   {
     "id": "V.E.PTH14871",
@@ -1510,7 +1564,8 @@
     "so_luong_tu": 1,
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Thanh Sơn"
   },
   {
     "id": "V.E.PTH14877",
@@ -1537,7 +1592,8 @@
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Thanh Sơn"
   },
   {
     "id": "V.E.PTH14878",
@@ -1564,7 +1620,8 @@
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Thanh Ba"
   },
   {
     "id": "V.E.PTH14879",
@@ -1591,7 +1648,8 @@
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Thanh Ba"
   },
   {
     "id": "V.E.PTH14880",
@@ -1618,7 +1676,8 @@
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Thanh Ba"
   },
   {
     "id": "V.E.PTH14883",
@@ -1645,7 +1704,8 @@
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Việt Trì"
   },
   {
     "id": "V.E.PTH14885",
@@ -1672,7 +1732,8 @@
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Việt Trì"
   },
   {
     "id": "V.E.PTH14886",
@@ -1699,7 +1760,8 @@
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Việt Trì"
   },
   {
     "id": "V.E.PTH14887",
@@ -1726,7 +1788,8 @@
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Việt Trì"
   },
   {
     "id": "V.E.PTH14890",
@@ -1754,7 +1817,8 @@
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
     "is_eve": true,
-    "eve_dot": "đợt 2"
+    "eve_dot": "đợt 2",
+    "don_vi_dien_luc": "Điện lực Việt Trì"
   },
   {
     "id": "V.E.PTH14891",
@@ -1781,7 +1845,8 @@
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Việt Trì"
   },
   {
     "id": "V.E.PTH14892",
@@ -1809,7 +1874,8 @@
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
     "is_eve": true,
-    "eve_dot": "đợt 2"
+    "eve_dot": "đợt 2",
+    "don_vi_dien_luc": "Điện lực Việt Trì"
   },
   {
     "id": "V.E.PTH14894",
@@ -1836,7 +1902,8 @@
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Tam Đảo"
   },
   {
     "id": "V.E.PTH14895",
@@ -1863,7 +1930,8 @@
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Tam Đảo"
   },
   {
     "id": "V.E.PTH14926",
@@ -1890,7 +1958,8 @@
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Tam Đảo"
   },
   {
     "id": "V.E.PTH14927",
@@ -1917,7 +1986,8 @@
     "so_luong_tu": 2,
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Vĩnh Yên"
   },
   {
     "id": "V.E.PTH14928",
@@ -1945,7 +2015,8 @@
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
     "is_eve": true,
-    "eve_dot": "đợt 2"
+    "eve_dot": "đợt 2",
+    "don_vi_dien_luc": "Điện lực Vĩnh Yên"
   },
   {
     "id": "V.E.PTH14929",
@@ -1973,7 +2044,8 @@
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
     "is_eve": true,
-    "eve_dot": "đợt 2"
+    "eve_dot": "đợt 2",
+    "don_vi_dien_luc": "Điện lực Vĩnh Yên"
   },
   {
     "id": "V.E.PTH14931",
@@ -2001,7 +2073,8 @@
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
     "is_eve": true,
-    "eve_dot": "đợt 2"
+    "eve_dot": "đợt 2",
+    "don_vi_dien_luc": "Điện lực Vĩnh Yên"
   },
   {
     "id": "V.E.PTH14932",
@@ -2028,6 +2101,7 @@
     "so_luong_tu": 3,
     "loai_tu": "6 ngăn",
     "so_met_day": 30,
-    "is_eve": false
+    "is_eve": false,
+    "don_vi_dien_luc": "Điện lực Vĩnh Yên"
   }
 ]

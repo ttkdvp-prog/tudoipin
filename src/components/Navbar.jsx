@@ -12,7 +12,7 @@ export default function Navbar({ activeTab, setActiveTab, dataSource, onRefresh,
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-[#080e1e]/95 backdrop-blur-xl border-b border-blue-900/30 shadow-2xl">
+    <header className="sticky top-0 z-40 bg-[#121c33]/95 backdrop-blur-xl border-b border-blue-900/40 shadow-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Brand Logo & Enterprise Title */}

@@ -576,19 +576,49 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
 
                       {/* Editable Column 1: Lắp điện */}
                       <td className="py-2.5 px-3">
-                        <select
-                          value={rowEditState.lap_dien}
-                          onChange={(e) => handleInlineChange(stationId, 'lap_dien', e.target.value)}
-                          className="w-full p-1.5 bg-[#060c18] border border-blue-900/60 hover:border-blue-500/60 focus:border-blue-400 rounded-lg text-xs text-slate-100 focus:outline-none transition-colors"
-                        >
-                          <option value="" className="bg-[#0b132b]">-- Chọn trạng thái --</option>
-                          <option value="Đã lắp xong" className="bg-[#0b132b]">Đã lắp xong (Hoàn thành)</option>
-                          <option value="Điện lực đã khảo sát và soạn HĐ" className="bg-[#0b132b]">Khảo sát & soạn HĐ</option>
-                          <option value="Đã khảo sát xong, chờ hợp đồng điện lực gửi" className="bg-[#0b132b]">Chờ hợp đồng gửi</option>
-                          <option value="Điện lực đang khảo sát" className="bg-[#0b132b]">Đang khảo sát</option>
-                          <option value="Hồ sơ gửi VGREEN, chưa nhận lại" className="bg-[#0b132b]">Chờ phản hồi VGREEN</option>
-                          <option value="Vướng mặt bằng / thi công" className="bg-[#0b132b]">Vướng mặt bằng / thi công</option>
-                        </select>
+                        {(() => {
+                          const val = (rowEditState.lap_dien || '').trim();
+                          const lower = val.toLowerCase();
+                          let styleClass = 'bg-[#0b1324] text-slate-400 italic border border-slate-700/80 hover:border-slate-500 font-medium';
+                          
+                          if (lower.includes('lắp xong') || lower.includes('đóng điện') || lower.includes('nghiệm thu') || lower.includes('hoàn thành')) {
+                            styleClass = 'bg-emerald-950/90 text-emerald-300 border-2 border-emerald-500 font-extrabold shadow-md shadow-emerald-500/25 ring-2 ring-emerald-500/30';
+                          } else if (lower.includes('vướng') || lower.includes('chưa nhận') || lower.includes('mặt bằng') || lower.includes('cắt tường')) {
+                            styleClass = 'bg-amber-950/90 text-amber-300 border border-amber-500/80 font-bold';
+                          } else if (val && !lower.includes('chưa')) {
+                            styleClass = 'bg-blue-950/90 text-blue-200 border border-blue-500/70 font-semibold';
+                          }
+
+                          return (
+                            <select
+                              value={rowEditState.lap_dien || ''}
+                              onChange={(e) => handleInlineChange(stationId, 'lap_dien', e.target.value)}
+                              className={`w-full p-2 rounded-lg text-xs focus:outline-none transition-all duration-200 cursor-pointer ${styleClass}`}
+                            >
+                              <option value="" className="bg-[#0b132b] text-slate-400 italic font-normal">
+                                ⚪ Chưa xong (Click để chọn)
+                              </option>
+                              <option value="Đã lắp xong" className="bg-[#0b132b] text-emerald-400 font-bold">
+                                ✅ Đã lắp xong (Hoàn thành)
+                              </option>
+                              <option value="Điện lực đã khảo sát và soạn HĐ" className="bg-[#0b132b] text-blue-300">
+                                ⚡ Điện lực đã khảo sát & soạn HĐ
+                              </option>
+                              <option value="Đã khảo sát xong, chờ hợp đồng điện lực gửi" className="bg-[#0b132b] text-cyan-300">
+                                📄 Chờ hợp đồng điện lực gửi
+                              </option>
+                              <option value="Điện lực đang khảo sát" className="bg-[#0b132b] text-amber-300">
+                                🔍 Điện lực đang khảo sát
+                              </option>
+                              <option value="Hồ sơ gửi VGREEN, chưa nhận lại" className="bg-[#0b132b] text-indigo-300">
+                                🕒 Chờ phản hồi VGREEN
+                              </option>
+                              <option value="Vướng mặt bằng / thi công" className="bg-[#0b132b] text-amber-400 font-bold">
+                                ⚠️ Vướng mặt bằng / thi công
+                              </option>
+                            </select>
+                          );
+                        })()}
                       </td>
 
                       {/* Editable Column 2: Lý do chưa triển khai */}

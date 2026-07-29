@@ -661,7 +661,7 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
                             }
                           }}
                           placeholder="Lý do chưa triển khai / vướng mắc..."
-                          className="w-full p-2 bg-[#060c18] border border-blue-900/60 hover:border-blue-500/60 focus:border-blue-400 rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:outline-none transition-colors leading-relaxed"
+                          className="w-full p-2 bg-[#060c18] border border-blue-900/60 hover:border-blue-500/60 focus:border-blue-400 rounded-lg text-[11px] text-slate-400 focus:text-slate-200 placeholder-slate-500 focus:outline-none transition-colors leading-relaxed"
                         />
                       </td>
 

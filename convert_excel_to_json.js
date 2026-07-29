@@ -73,6 +73,9 @@ masterSheets.forEach(sheetName => {
       statusDienLuc = 'Chờ Điện lực xử lý/HĐ';
     }
 
+    const rawDonViDV = String(rowObj['Đơn vị điện lực'] || rowObj['Đơn Vị Điện Lực'] || rowObj['đơn vị điện lực'] || '').trim();
+    const donViDienLucVal = (rawDonViDV && rawDonViDV.toLowerCase() !== 'x') ? rawDonViDV : '';
+
     allStations.push({
       id: maTram,
       sheetSource: sheetName,
@@ -90,6 +93,7 @@ masterSheets.forEach(sheetName => {
       lng: parseFloat(rowObj['LONG'] || rowObj['Long']) || null,
       pa_dien: paDien,
       don_vi_phu_trach: donViPhuTrach,
+      don_vi_dien_luc: donViDienLucVal || ('Điện lực ' + String(rowObj['Tổ HT'] || rowObj['Tổ hạ tầng'] || '').trim()),
       is_3phase: is3Phase,
       lap_dien: lapDienVal,
       status_lap_dat: statusLapDat,

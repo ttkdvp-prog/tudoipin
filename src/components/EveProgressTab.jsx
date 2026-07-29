@@ -229,7 +229,7 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
       `"${s.eve_dot || s.dot || ''}"`,
       `"${s.ma_tram || ''}"`,
       `"${(s.ten_co_so || '').replace(/"/g, '""')}"`,
-      `"${(s.don_vi_dien_luc || ('Điện lực ' + (s.to_ht || ''))).replace(/"/g, '""')}"`,
+      `"${((s.don_vi_dien_luc && s.don_vi_dien_luc.toLowerCase() !== 'x') ? s.don_vi_dien_luc : ('Điện lực ' + (s.to_ht || ''))).replace(/"/g, '""')}"`,
       `"${s.to_ht || ''}"`,
       `"${s.to_truong || ''}"`,
       `"${s.sdt || ''}"`,
@@ -584,7 +584,7 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
 
                       <td className="py-3 px-4">
                         <div className="text-[11px] text-blue-300 font-medium leading-snug">
-                          {station.don_vi_dien_luc || ('Điện lực ' + (station.to_ht || station.dia_ban || ''))}
+                          {(station.don_vi_dien_luc && station.don_vi_dien_luc.toLowerCase() !== 'x') ? station.don_vi_dien_luc : ('Điện lực ' + (station.to_ht || station.dia_ban || ''))}
                         </div>
                       </td>
 

@@ -12,13 +12,28 @@ function doGet(e) {
   }
 
   try {
+    var cache = CacheService.getScriptCache();
+    var cached = cache.get('all_stations_data');
+    if (cached && action === 'getData') {
+      try {
+        var parsed = JSON.parse(cached);
+        return createJsonResponse(parsed);
+      } catch (ce) {}
+    }
+
     var data = getAllStationData();
-    return createJsonResponse({
+    var responseObj = {
       status: 'success',
       timestamp: new Date().toISOString(),
       total: data.length,
       data: data
-    });
+    };
+
+    try {
+      cache.put('all_stations_data', JSON.stringify(responseObj), 30); // 30s cache for fast loading
+    } catch (errCache) {}
+
+    return createJsonResponse(responseObj);
   } catch (err) {
     return createJsonResponse({
       status: 'error',
@@ -40,6 +55,10 @@ function doPost(e) {
 
     if (action === 'updateStation' || action === 'updateField') {
       var result = updateStationData(postData.stationId, postData.updates);
+      // Invalidate cache immediately on update
+      try {
+        CacheService.getScriptCache().remove('all_stations_data');
+      } catch (cErr) {}
       return createJsonResponse({ status: 'success', result: result, timestamp: new Date().toISOString() });
     }
 
@@ -50,15 +69,28 @@ function doPost(e) {
 }
 
 function findColIndex(headers, targets) {
-  for (var i = 0; i < headers.length; i++) {
-    var h = String(headers[i] || '').toLowerCase().trim();
-    for (var t = 0; t < targets.length; t++) {
-      var target = String(targets[t]).toLowerCase().trim();
-      if (h === target || h.indexOf(target) !== -1) {
+  // Pass 1: Exact match for target candidates in priority order
+  for (var t = 0; t < targets.length; t++) {
+    var target = String(targets[t]).toLowerCase().trim();
+    for (var i = 0; i < headers.length; i++) {
+      var h = String(headers[i] || '').toLowerCase().trim();
+      if (h === target) {
         return i;
       }
     }
   }
+
+  // Pass 2: Partial match (contains) for target candidates in priority order
+  for (var t = 0; t < targets.length; t++) {
+    var target = String(targets[t]).toLowerCase().trim();
+    for (var i = 0; i < headers.length; i++) {
+      var h = String(headers[i] || '').toLowerCase().trim();
+      if (h.indexOf(target) !== -1) {
+        return i;
+      }
+    }
+  }
+
   return -1;
 }
 
@@ -100,8 +132,10 @@ function getAllStationData() {
       var colLyDo = findColIndex(headers, ['lý do chưa triển khai', 'vướng mắc']);
       var lyDoVuongMac = colLyDo !== -1 ? String(row[colLyDo] || '').trim() : '';
 
-      var colDV = findColIndex(headers, ['đơn vị điện lực', 'điện lực']);
-      var donViDienLucVal = colDV !== -1 ? String(row[colDV] || '').trim() : '';
+      // Đơn vị điện lực (ví dụ: Cao phong, Tổ điện lực Lập Thạch, Hạ Hòa...)
+      var colDV = findColIndex(headers, ['đơn vị điện lực', 'đơn vị đl']);
+      var rawDVVal = colDV !== -1 ? String(row[colDV] || '').trim() : '';
+      var donViDienLucVal = (rawDVVal && rawDVVal.toLowerCase() !== 'x') ? rawDVVal : '';
 
       var colToHT = findColIndex(headers, ['tổ ht', 'tổ hạ tầng']);
       var toHtVal = colToHT !== -1 ? String(row[colToHT] || '').trim() : '';
@@ -171,7 +205,7 @@ function getAllStationData() {
         dia_chi: diaChiVal,
         pa_dien: paDien,
         don_vi_phu_trach: donViPhuTrach,
-        don_vi_dien_luc: donViDienLucVal || ('Điện lực ' + toHtVal),
+        don_vi_dien_luc: donViDienLucVal || ('Điện lực ' + (toHtVal || sheetName)),
         is_3phase: is3Phase,
         is_eve: isEve,
         lap_dien: lapDienVal,
@@ -226,7 +260,7 @@ function updateStationData(stationId, updates) {
 
         // 3. Đơn vị điện lực
         if (updates.don_vi_dien_luc !== undefined) {
-          var colDV = findColIndex(headers, ['đơn vị điện lực', 'điện lực']);
+          var colDV = findColIndex(headers, ['đơn vị điện lực', 'đơn vị đl']);
           if (colDV !== -1) sheet.getRange(r + 1, colDV + 1).setValue(updates.don_vi_dien_luc);
         }
 

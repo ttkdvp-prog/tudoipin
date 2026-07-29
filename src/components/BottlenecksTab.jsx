@@ -88,33 +88,33 @@ export default function BottlenecksTab({ stations, onSelectStation }) {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="glass-card rounded-xl p-5 border-l-4 border-l-amber-500 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="glass-card rounded-2xl p-6 relative overflow-hidden bg-gradient-to-r from-orange-50 via-amber-50/60 to-rose-50 border border-orange-200/80 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30 mb-1">
-            <AlertTriangle className="w-3.5 h-3.5 mr-1" />
+          <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-extrabold bg-orange-100 text-orange-800 border border-orange-200 mb-2">
+            <AlertTriangle className="w-3.5 h-3.5 mr-1.5 text-orange-600" />
             Theo Dõi Trực Quan: Vướng Mắc & Ghi Chú Tiến Độ
           </div>
-          <h2 className="text-lg font-bold text-white">Báo Cáo Phân Loại Vướng Mắc & Thủ Tục Triển Khai</h2>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Phân định rõ giữa **Trạm có vướng mắc thực sự** (Chờ VGREEN, Cắt tường/mặt bằng) và **Trạm đang làm thủ tục EVN bình thường**.
+          <h2 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">Báo Cáo Phân Loại Vướng Mắc & Thủ Tục Triển Khai</h2>
+          <p className="text-xs text-slate-600 mt-1 max-w-2xl font-medium">
+            Phân định rõ giữa <strong>Trạm có vướng mắc thực sự</strong> (Chờ VGREEN, Cắt tường/mặt bằng) và <strong>Trạm đang làm thủ tục EVN bình thường</strong>.
           </p>
         </div>
 
         {/* Breakdown Badges */}
-        <div className="flex items-center space-x-3 bg-slate-800/80 px-4 py-2.5 rounded-xl border border-slate-700">
-          <div className="text-center pr-3 border-r border-slate-700">
-            <span className="text-[10px] text-rose-400 uppercase font-bold block">Vướng mắc cần xử lý</span>
-            <span className="text-xl font-extrabold text-rose-400">{realIssuesCount} <span className="text-xs font-normal">trạm</span></span>
+        <div className="flex items-center space-x-3 bg-white px-4 py-3 rounded-2xl border border-slate-200/80 shadow-xs">
+          <div className="text-center pr-3 border-r border-slate-200">
+            <span className="text-[10px] text-rose-600 uppercase font-extrabold block">Vướng mắc cần xử lý</span>
+            <span className="text-xl font-black text-rose-700">{realIssuesCount} <span className="text-xs font-bold text-slate-500">trạm</span></span>
           </div>
           <div className="text-center pl-1">
-            <span className="text-[10px] text-amber-400 uppercase font-bold block">Đang thủ tục EVN</span>
-            <span className="text-xl font-extrabold text-amber-400">{evnPendingCount} <span className="text-xs font-normal">trạm</span></span>
+            <span className="text-[10px] text-orange-600 uppercase font-extrabold block">Đang thủ tục EVN</span>
+            <span className="text-xl font-black text-orange-700">{evnPendingCount} <span className="text-xs font-bold text-slate-500">trạm</span></span>
           </div>
         </div>
       </div>
 
       {/* Universal Search Bar & Filters */}
-      <div className="glass-card rounded-xl p-4 flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="glass-card rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-3 border border-slate-200/80 shadow-xs">
         {/* Universal Search Input */}
         <div className="relative w-full md:w-80">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -123,21 +123,21 @@ export default function BottlenecksTab({ stations, onSelectStation }) {
             placeholder="Tìm theo Mã trạm, Tổ hạ tầng, Tên địa điểm..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-1.5 bg-slate-800/80 border border-slate-700 rounded-lg text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-500"
+            className="w-full pl-9 pr-4 py-2 bg-slate-100/90 border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 font-medium"
           />
         </div>
 
         {/* Dynamic Đợt Filter */}
-        <div className="flex items-center space-x-1.5 bg-slate-800/80 border border-slate-700 rounded-lg px-2.5 py-1.5">
-          <Layers className="w-3.5 h-3.5 text-cyan-400" />
+        <div className="flex items-center space-x-2 bg-slate-100/90 border border-slate-200 rounded-xl px-3 py-1.5">
+          <Layers className="w-3.5 h-3.5 text-violet-600" />
           <select
             value={selectedDot}
             onChange={(e) => setSelectedDot(e.target.value)}
-            className="bg-transparent text-xs text-slate-200 font-medium focus:outline-none cursor-pointer"
+            className="bg-transparent text-xs text-slate-800 font-bold focus:outline-none cursor-pointer"
           >
-            <option value="ALL" className="bg-slate-900">Tất cả các đợt (74 trạm)</option>
+            <option value="ALL">Tất cả các đợt ({stations.length} trạm)</option>
             {dotsList.map(d => (
-              <option key={d} value={d} className="bg-slate-900">{d}</option>
+              <option key={d} value={d}>{d}</option>
             ))}
           </select>
         </div>
@@ -145,10 +145,10 @@ export default function BottlenecksTab({ stations, onSelectStation }) {
         {/* Real Issue Toggle */}
         <button
           onClick={() => setOnlyRealIssues(!onlyRealIssues)}
-          className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all ${
+          className={`px-3.5 py-2 rounded-xl text-xs font-bold border transition-all ${
             onlyRealIssues
-              ? 'bg-rose-500/20 text-rose-300 border-rose-500/50'
-              : 'bg-slate-800 text-slate-400 border-slate-700 hover:text-slate-200'
+              ? 'bg-rose-100 text-rose-800 border-rose-300 shadow-xs'
+              : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
           }`}
         >
           {onlyRealIssues ? '✓ Chỉ xem vướng mắc thực sự' : 'Xem tất cả ghi chú'}
@@ -163,10 +163,10 @@ export default function BottlenecksTab({ stations, onSelectStation }) {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
                 isActive
-                  ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20 font-bold'
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700/60'
+                  ? 'bg-[#1E1B3A] text-white shadow-md shadow-violet-950/20'
+                  : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200/80'
               }`}
             >
               {cat === 'ALL' ? 'Tất cả nhóm ghi chú' : cat}
@@ -178,7 +178,7 @@ export default function BottlenecksTab({ stations, onSelectStation }) {
       {/* Issues Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredIssues.length === 0 ? (
-          <div className="col-span-full glass-card rounded-xl p-8 text-center text-slate-400 text-xs">
+          <div className="col-span-full glass-card rounded-2xl p-8 text-center text-slate-500 text-xs font-medium border border-slate-200/80">
             Không tìm thấy ghi chú vướng mắc nào phù hợp với bộ lọc tìm kiếm.
           </div>
         ) : (
@@ -189,41 +189,41 @@ export default function BottlenecksTab({ stations, onSelectStation }) {
               <div
                 key={station.id}
                 onClick={() => onSelectStation(station)}
-                className={`glass-card glass-card-hover rounded-xl p-4 relative flex flex-col justify-between cursor-pointer border-l-4 ${
-                  isRedIssue ? 'border-l-rose-500' : 'border-l-amber-500'
+                className={`glass-card glass-card-hover rounded-2xl p-4 relative flex flex-col justify-between cursor-pointer border shadow-xs transition-all ${
+                  isRedIssue ? 'bg-rose-50/40 border-rose-200 hover:border-rose-300' : 'bg-orange-50/40 border-orange-200 hover:border-orange-300'
                 }`}
               >
                 <div>
                   <div className="flex items-center justify-between">
-                    <span className="font-mono font-bold text-xs text-cyan-400">{station.ma_tram}</span>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">
+                    <span className="font-mono font-bold text-xs text-violet-700">{station.ma_tram}</span>
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white text-slate-800 border border-slate-200">
                       {station.to_ht} • {station.dot}
                     </span>
                   </div>
 
-                  <h4 className="text-xs font-bold text-white mt-1.5 truncate">{station.ten_co_so}</h4>
-                  <p className="text-[11px] text-slate-400 truncate">{station.dia_chi || station.dia_ban}</p>
+                  <h4 className="text-xs font-extrabold text-slate-900 mt-2 truncate">{station.ten_co_so}</h4>
+                  <p className="text-[11px] text-slate-500 truncate font-medium">{station.dia_chi || station.dia_ban}</p>
 
                   {/* Category Badge */}
                   <div className="mt-2.5">
-                    <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold border ${
-                      isRedIssue ? 'bg-rose-500/10 text-rose-400 border-rose-500/30' : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                    <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${
+                      isRedIssue ? 'bg-rose-100 text-rose-800 border-rose-200' : 'bg-orange-100 text-orange-800 border-orange-200'
                     }`}>
                       {station.category}
                     </span>
                   </div>
 
                   {/* Detailed Vuong Mac Note */}
-                  <div className="mt-3 p-2.5 rounded-lg bg-slate-900/80 border border-slate-800 text-xs text-slate-200 leading-relaxed font-medium">
-                    <MessageSquare className={`w-3 h-3 inline mr-1.5 shrink-0 ${isRedIssue ? 'text-rose-400' : 'text-amber-400'}`} />
+                  <div className="mt-3 p-3 rounded-xl bg-white border border-slate-200/80 text-xs text-slate-800 leading-relaxed font-medium shadow-xs">
+                    <MessageSquare className={`w-3.5 h-3.5 inline mr-1.5 shrink-0 ${isRedIssue ? 'text-rose-600' : 'text-orange-600'}`} />
                     "{station.vuong_mac}"
                   </div>
                 </div>
 
                 {/* Footer info */}
-                <div className="mt-4 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
-                  <span>Phụ trách: <strong>{station.to_truong || 'Chưa rõ'}</strong></span>
-                  <span className="text-cyan-400 hover:underline font-semibold">
+                <div className="mt-4 pt-2.5 border-t border-slate-200/70 flex items-center justify-between text-[11px] text-slate-500 font-medium">
+                  <span>Phụ trách: <strong className="text-slate-800">{station.to_truong || 'Chưa rõ'}</strong></span>
+                  <span className="text-violet-700 hover:underline font-bold">
                     Sửa thông số ✎
                   </span>
                 </div>

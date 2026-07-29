@@ -70,71 +70,79 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0f192e] text-slate-100 selection:bg-blue-600 selection:text-white">
-      {/* Navigation Top Header */}
-      <Navbar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        dataSource={dataSource}
-        onRefresh={() => loadData(false)}
-        onOpenSettings={() => setShowSettings(true)}
-        lastUpdated={lastUpdated}
-        isSyncing={isSyncing}
-      />
+    <div className="min-h-screen bg-[#EBEFF5] text-slate-800 selection:bg-violet-600 selection:text-white p-2 sm:p-4 md:p-6 flex flex-col items-center">
+      {/* Tasklyn Dashboard Main Container Box */}
+      <div className="w-full max-w-[1440px] bg-[#F2F5FA] border border-white/80 rounded-[28px] sm:rounded-[36px] shadow-2xl shadow-slate-300/60 overflow-hidden flex flex-col flex-1 min-h-[90vh]">
+        {/* Navigation Top Header */}
+        <Navbar
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          dataSource={dataSource}
+          onRefresh={() => loadData(false)}
+          onOpenSettings={() => setShowSettings(true)}
+          lastUpdated={lastUpdated}
+          isSyncing={isSyncing}
+        />
 
-      {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {loading ? (
-          <div className="flex flex-col items-center justify-center h-96 space-y-4">
-            <RefreshCw className="w-8 h-8 text-blue-400 animate-spin" />
-            <p className="text-xs text-slate-300 font-medium">Đang đồng bộ dữ liệu trạm tủ đổi pin...</p>
-          </div>
-        ) : (
-          <>
-            {activeTab === 'overview' && (
-              <OverviewTab
-                stations={stations}
-                onSelectStation={setSelectedStation}
-                onUpdateStation={handleUpdateStationLocally}
-              />
-            )}
-            {activeTab === 'eve' && (
-              <EveProgressTab
-                stations={stations}
-                onSelectStation={setSelectedStation}
-                onUpdateStation={handleUpdateStationLocally}
-              />
-            )}
-            {activeTab === 'installation' && (
-              <InstallationTab
-                stations={stations}
-                onSelectStation={setSelectedStation}
-                onUpdateStation={handleUpdateStationLocally}
-              />
-            )}
-            {activeTab === 'power' && (
-              <PowerGridTab
-                stations={stations}
-                onSelectStation={setSelectedStation}
-                onUpdateStation={handleUpdateStationLocally}
-              />
-            )}
-            {activeTab === 'bottlenecks' && (
-              <BottlenecksTab
-                stations={stations}
-                onSelectStation={setSelectedStation}
-                onUpdateStation={handleUpdateStationLocally}
-              />
-            )}
-            {activeTab === 'map' && (
-              <MapTab
-                stations={stations}
-                onSelectStation={setSelectedStation}
-              />
-            )}
-          </>
-        )}
-      </main>
+        {/* Main Content Area */}
+        <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 py-6">
+          {loading ? (
+            <div className="flex flex-col items-center justify-center h-96 space-y-4">
+              <RefreshCw className="w-8 h-8 text-violet-600 animate-spin" />
+              <p className="text-xs text-slate-600 font-semibold">Đang đồng bộ dữ liệu trạm tủ đổi pin...</p>
+            </div>
+          ) : (
+            <>
+              {activeTab === 'overview' && (
+                <OverviewTab
+                  stations={stations}
+                  onSelectStation={setSelectedStation}
+                  onUpdateStation={handleUpdateStationLocally}
+                />
+              )}
+              {activeTab === 'eve' && (
+                <EveProgressTab
+                  stations={stations}
+                  onSelectStation={setSelectedStation}
+                  onUpdateStation={handleUpdateStationLocally}
+                />
+              )}
+              {activeTab === 'installation' && (
+                <InstallationTab
+                  stations={stations}
+                  onSelectStation={setSelectedStation}
+                  onUpdateStation={handleUpdateStationLocally}
+                />
+              )}
+              {activeTab === 'power' && (
+                <PowerGridTab
+                  stations={stations}
+                  onSelectStation={setSelectedStation}
+                  onUpdateStation={handleUpdateStationLocally}
+                />
+              )}
+              {activeTab === 'bottlenecks' && (
+                <BottlenecksTab
+                  stations={stations}
+                  onSelectStation={setSelectedStation}
+                  onUpdateStation={handleUpdateStationLocally}
+                />
+              )}
+              {activeTab === 'map' && (
+                <MapTab
+                  stations={stations}
+                  onSelectStation={setSelectedStation}
+                />
+              )}
+            </>
+          )}
+        </main>
+
+        {/* Footer */}
+        <footer className="border-t border-slate-200/80 bg-white/60 py-3.5 text-center text-xs text-slate-500 font-medium">
+          Hệ thống Quản lý Tiến độ Tủ Đổi Pin & Điện Lực EVN
+        </footer>
+      </div>
 
       {/* Station Detail Modal Popup */}
       {selectedStation && (
@@ -152,11 +160,6 @@ export default function App() {
           onSaveSuccess={() => loadData(false)}
         />
       )}
-
-      {/* Footer */}
-      <footer className="border-t border-blue-900/40 bg-[#0b1324] py-3 text-center text-xs text-slate-500">
-        Hệ thống Quản lý Tiến độ Tủ Đổi Pin
-      </footer>
     </div>
   );
 }

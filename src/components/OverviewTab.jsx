@@ -79,20 +79,20 @@ export default function OverviewTab({ stations, onSelectStation }) {
       {
         label: 'Tổng trạm',
         data: teamTotalData,
-        backgroundColor: 'rgba(56, 189, 248, 0.7)',
-        borderRadius: 6,
+        backgroundColor: '#3B82F6',
+        borderRadius: 8,
       },
       {
         label: 'Đã đóng điện EVN',
         data: teamPowerDoneData,
-        backgroundColor: 'rgba(16, 185, 129, 0.8)',
-        borderRadius: 6,
+        backgroundColor: '#10B981',
+        borderRadius: 8,
       },
       {
         label: 'Có vướng mắc',
         data: teamIssuesData,
-        backgroundColor: 'rgba(239, 68, 68, 0.8)',
-        borderRadius: 6,
+        backgroundColor: '#FF6B57',
+        borderRadius: 8,
       }
     ]
   };
@@ -101,12 +101,12 @@ export default function OverviewTab({ stations, onSelectStation }) {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { labels: { color: '#94a3b8', font: { family: 'Inter', size: 11 } } },
-      tooltip: { backgroundColor: 'rgba(15, 23, 42, 0.9)', titleColor: '#fff', bodyColor: '#cbd5e1' }
+      legend: { labels: { color: '#475569', font: { family: 'Inter', size: 11, weight: '600' } } },
+      tooltip: { backgroundColor: '#1E1B3A', titleColor: '#fff', bodyColor: '#e2e8f0', borderRadius: 8 }
     },
     scales: {
-      x: { ticks: { color: '#94a3b8', font: { family: 'Inter', size: 10 } }, grid: { display: false } },
-      y: { ticks: { color: '#94a3b8', font: { family: 'Inter', size: 10 } }, grid: { color: 'rgba(255, 255, 255, 0.05)' } }
+      x: { ticks: { color: '#64748b', font: { family: 'Inter', size: 10, weight: '500' } }, grid: { display: false } },
+      y: { ticks: { color: '#64748b', font: { family: 'Inter', size: 10, weight: '500' } }, grid: { color: 'rgba(226, 232, 240, 0.8)' } }
     }
   };
 
@@ -115,7 +115,7 @@ export default function OverviewTab({ stations, onSelectStation }) {
     datasets: [
       {
         data: [powerDone, powerPending, Math.max(0, totalStations - powerDone - powerPending)],
-        backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+        backgroundColor: ['#9A5CFF', '#FF6B57', '#3B82F6'],
         borderWidth: 0,
       }
     ]
@@ -124,7 +124,7 @@ export default function OverviewTab({ stations, onSelectStation }) {
   return (
     <div className="space-y-6">
       {/* Universal Search & Batch Filter Bar */}
-      <div className="glass-card rounded-xl p-4 flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="glass-card rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-3 shadow-sm border border-slate-200/80">
         {/* Universal Search Input */}
         <div className="relative w-full md:w-80">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -133,22 +133,22 @@ export default function OverviewTab({ stations, onSelectStation }) {
             placeholder="Tìm theo Mã trạm, Tổ hạ tầng, Tên địa điểm..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 bg-slate-800/80 border border-slate-700 rounded-lg text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-500"
+            className="w-full pl-9 pr-4 py-2 bg-slate-100/90 border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 font-medium"
           />
         </div>
 
         {/* Dynamic Đợt Filter */}
         <div className="flex items-center space-x-2 w-full md:w-auto justify-end">
-          <div className="flex items-center space-x-1.5 bg-slate-800/80 border border-slate-700 rounded-lg px-3 py-1.5">
-            <Filter className="w-3.5 h-3.5 text-cyan-400" />
+          <div className="flex items-center space-x-2 bg-slate-100/90 border border-slate-200 rounded-xl px-3.5 py-1.5">
+            <Filter className="w-3.5 h-3.5 text-violet-600" />
             <select
               value={selectedDot}
               onChange={(e) => setSelectedDot(e.target.value)}
-              className="bg-transparent text-xs text-slate-200 font-medium focus:outline-none cursor-pointer"
+              className="bg-transparent text-xs text-slate-800 font-bold focus:outline-none cursor-pointer"
             >
-              <option value="ALL" className="bg-slate-900">Tất cả các đợt ({dotsList.length} đợt)</option>
+              <option value="ALL">Tất cả các đợt ({dotsList.length} đợt)</option>
               {dotsList.map(d => (
-                <option key={d} value={d} className="bg-slate-900">{d}</option>
+                <option key={d} value={d}>{d}</option>
               ))}
             </select>
           </div>
@@ -184,7 +184,7 @@ export default function OverviewTab({ stations, onSelectStation }) {
           value={`${totalIssues} Trạm`}
           subtext="Cần xử lý dứt điểm trở ngại"
           icon={AlertTriangle}
-          color="red"
+          color="amber"
           percent={Math.round((totalIssues / (totalStations || 1)) * 100)}
         />
       </div>
@@ -192,13 +192,13 @@ export default function OverviewTab({ stations, onSelectStation }) {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Bar Chart */}
-        <div className="lg:col-span-2 glass-card rounded-xl p-5">
+        <div className="lg:col-span-2 glass-card rounded-2xl p-5 shadow-sm border border-slate-200/80">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center">
-              <Layers className="w-4 h-4 mr-2 text-cyan-400" />
+            <h3 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center">
+              <Layers className="w-4 h-4 mr-2 text-violet-600" />
               Thống Kê Tiến Độ Theo Tổ Hạ Tầng
             </h3>
-            <span className="text-xs text-slate-400">Đơn vị: Trạm</span>
+            <span className="text-xs font-bold text-slate-500">Đơn vị: Trạm</span>
           </div>
           <div className="h-64">
             <Bar data={barChartData} options={barChartOptions} />
@@ -206,28 +206,28 @@ export default function OverviewTab({ stations, onSelectStation }) {
         </div>
 
         {/* Doughnut Chart */}
-        <div className="glass-card rounded-xl p-5 flex flex-col justify-between">
-          <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-2 flex items-center">
-            <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-400" />
+        <div className="glass-card rounded-2xl p-5 flex flex-col justify-between shadow-sm border border-slate-200/80">
+          <h3 className="text-xs font-black text-slate-900 uppercase tracking-wider mb-2 flex items-center">
+            <CheckCircle2 className="w-4 h-4 mr-2 text-emerald-600" />
             Tỷ Lệ Đóng Điện EVN
           </h3>
           <div className="h-52 relative flex items-center justify-center my-2">
-            <Doughnut data={doughnutData} options={{ maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 11 } } } } }} />
+            <Doughnut data={doughnutData} options={{ maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#475569', font: { size: 11, weight: '600' } } } } }} />
           </div>
-          <div className="text-center text-xs text-slate-400 border-t border-slate-800 pt-3">
-            Tỷ lệ phủ điện EVN đạt <span className="text-emerald-400 font-bold">{Math.round((powerDone / (totalStations || 1)) * 100)}%</span>
+          <div className="text-center text-xs font-medium text-slate-500 border-t border-slate-100 pt-3">
+            Tỷ lệ phủ điện EVN đạt <span className="text-violet-700 font-extrabold">{Math.round((powerDone / (totalStations || 1)) * 100)}%</span>
           </div>
         </div>
       </div>
 
       {/* Quick Recent Issues List */}
-      <div className="glass-card rounded-xl p-5">
+      <div className="glass-card rounded-2xl p-5 shadow-sm border border-slate-200/80">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center">
-            <AlertTriangle className="w-4 h-4 mr-2 text-amber-400" />
+          <h3 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center">
+            <AlertTriangle className="w-4 h-4 mr-2 text-orange-500" />
             Các Trạm Cần Chú Ý Xử Lý Vướng Mắc Gần Đây
           </h3>
-          <span className="text-xs text-slate-400">Lọc theo từ khóa tìm kiếm</span>
+          <span className="text-xs font-semibold text-slate-500">Lọc theo từ khóa tìm kiếm</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -235,16 +235,16 @@ export default function OverviewTab({ stations, onSelectStation }) {
             <div
               key={station.id}
               onClick={() => onSelectStation(station)}
-              className="p-3.5 rounded-lg bg-slate-800/60 border border-slate-700/60 hover:border-amber-500/50 hover:bg-slate-800 cursor-pointer transition-all"
+              className="p-4 rounded-xl bg-orange-50/50 border border-orange-200/60 hover:border-orange-300 hover:bg-orange-50/90 cursor-pointer transition-all shadow-xs"
             >
               <div className="flex items-center justify-between">
-                <span className="font-mono text-xs font-bold text-cyan-400">{station.ma_tram}</span>
-                <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/30">
+                <span className="font-mono text-xs font-extrabold text-violet-700">{station.ma_tram}</span>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-white text-orange-700 border border-orange-200">
                   {station.to_ht}
                 </span>
               </div>
-              <p className="text-xs font-semibold text-slate-100 mt-1 truncate">{station.ten_co_so}</p>
-              <p className="text-xs text-amber-300/90 mt-1 line-clamp-2 italic">
+              <p className="text-xs font-extrabold text-slate-900 mt-1 truncate">{station.ten_co_so}</p>
+              <p className="text-xs text-orange-900/90 mt-1 line-clamp-2 italic font-medium">
                 "{station.vuong_mac}"
               </p>
             </div>

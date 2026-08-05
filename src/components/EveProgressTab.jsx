@@ -14,7 +14,9 @@ import {
   Check,
   RefreshCw,
   Layers,
-  Activity
+  Activity,
+  ClipboardList,
+  FileSearch
 } from 'lucide-react';
 
 export default function EveProgressTab({ stations, onSelectStation, onUpdateStation }) {
@@ -322,16 +324,16 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
           </div>
         </div>
 
-        <div className="glass-card rounded-xl p-4 border border-blue-500/25 bg-[#0d1a33]/90">
-          <div className="flex justify-between items-center text-xs font-semibold text-blue-300 uppercase tracking-wider">
-            <span>2. CHỜ EVN SOẠN HĐ / KHẢO SÁT</span>
-            <Clock className="w-4 h-4 text-blue-400" />
+        <div className="glass-card rounded-xl p-4 border border-sky-500/30 bg-[#0c1c33]/90">
+          <div className="flex justify-between items-center text-xs font-semibold text-sky-300 uppercase tracking-wider">
+            <span>2. CHỜ EVN KHẢO SÁT / SOẠN HĐ</span>
+            <ClipboardList className="w-4 h-4 text-sky-400" />
           </div>
-          <div className="text-3xl font-black text-blue-200 mt-2 tracking-tight">
+          <div className="text-3xl font-black text-sky-200 mt-2 tracking-tight">
             {stats.pending} <span className="text-xs font-normal text-slate-400">trạm</span>
           </div>
-          <div className="text-[11px] text-blue-400/80 mt-1 font-medium">
-            Đang tiến hành theo đúng thủ tục
+          <div className="text-[11px] text-sky-300/80 mt-1 font-medium">
+            Đang chờ EVN khảo sát & làm thủ tục
           </div>
         </div>
 
@@ -428,8 +430,8 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
                     <CheckCircle2 className="w-3 h-3 mr-1" /> {item.done} xong
                   </span>
                   {item.pending > 0 && (
-                    <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-blue-950/60 text-blue-300 border border-blue-500/30">
-                      <Clock className="w-3 h-3 mr-1" /> {item.pending} chờ
+                    <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-sky-950/80 text-sky-300 border border-sky-500/40 shadow-sm">
+                      <ClipboardList className="w-3 h-3 mr-1 text-sky-400" /> {item.pending} chờ khảo sát
                     </span>
                   )}
                   {item.issue > 0 && (
@@ -467,8 +469,8 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
             >
               <option value="ALL" className="bg-[#0b132b]">Tất cả trạng thái</option>
               <option value="DONE" className="bg-[#0b132b]">Đã lắp xong / Đóng điện</option>
-              <option value="PENDING" className="bg-[#0b132b]">Đang khảo sát / Chờ HĐ</option>
-              <option value="ISSUE" className="bg-[#0b132b]">Vướng thủ tục / Vướng mặt bằng</option>
+              <option value="PENDING" className="bg-[#0b132b]">📋 Chờ EVN khảo sát / Chờ HĐ</option>
+              <option value="ISSUE" className="bg-[#0b132b]">⚠️ Vướng thủ tục / Vướng mặt bằng</option>
             </select>
           </div>
 
@@ -598,6 +600,8 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
                             styleClass = 'bg-emerald-950/90 text-emerald-300 border-2 border-emerald-500 font-extrabold shadow-md shadow-emerald-500/25 ring-2 ring-emerald-500/30';
                           } else if (lower.includes('vướng') || lower.includes('chưa nhận') || lower.includes('mặt bằng') || lower.includes('cắt tường')) {
                             styleClass = 'bg-amber-950/90 text-amber-300 border border-amber-500/80 font-bold';
+                          } else if (lower.includes('khảo sát') || lower.includes('chờ')) {
+                            styleClass = 'bg-sky-950/90 text-sky-300 border border-sky-500/80 font-semibold shadow-sm';
                           } else if (val && !lower.includes('chưa')) {
                             styleClass = 'bg-blue-950/90 text-blue-200 border border-blue-500/70 font-semibold';
                           }
@@ -621,14 +625,17 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
                               <option value="Đã lắp xong" className="bg-[#0b132b] text-emerald-400 font-bold">
                                 ✅ Đã lắp xong (Hoàn thành)
                               </option>
+                              <option value="Chờ EVN khảo sát" className="bg-[#0b132b] text-sky-300 font-bold">
+                                📋 Chờ EVN khảo sát
+                              </option>
+                              <option value="Điện lực đang khảo sát" className="bg-[#0b132b] text-cyan-300 font-semibold">
+                                🔍 Điện lực đang khảo sát
+                              </option>
                               <option value="Điện lực đã khảo sát và soạn HĐ" className="bg-[#0b132b] text-blue-300">
                                 ⚡ Điện lực đã khảo sát & soạn HĐ
                               </option>
                               <option value="Đã khảo sát xong, chờ hợp đồng điện lực gửi" className="bg-[#0b132b] text-cyan-300">
                                 📄 Chờ hợp đồng điện lực gửi
-                              </option>
-                              <option value="Điện lực đang khảo sát" className="bg-[#0b132b] text-amber-300">
-                                🔍 Điện lực đang khảo sát
                               </option>
                               <option value="Hồ sơ gửi VGREEN, chưa nhận lại" className="bg-[#0b132b] text-indigo-300">
                                 🕒 Chờ phản hồi VGREEN

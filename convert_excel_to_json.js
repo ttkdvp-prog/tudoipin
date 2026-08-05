@@ -29,28 +29,23 @@ masterSheets.forEach(sheetName => {
 
     const isEvn = Boolean(rowObj['Điện Lực'] && String(rowObj['Điện Lực']).trim().toLowerCase() === 'x');
     const isVnpt = Boolean(rowObj['Điện VNPT'] && String(rowObj['Điện VNPT']).trim().toLowerCase() === 'x');
+    const paRaw = String(rowObj['PA Điện'] || rowObj['PA Điện'] || '').trim().toUpperCase();
 
     let paDien = 'Điện EVN 3P';
     let donViPhuTrach = 'Điện Lực';
-    let is3Phase = false;
+    let is3Phase = true;
+    let isEve = true;
 
-    if (isEvn) {
-      paDien = 'Điện EVN 3P';
-      donViPhuTrach = 'Điện Lực';
-      is3Phase = true;
-    } else if (isVnpt) {
+    if (isVnpt || paRaw.includes('1P') || paRaw.includes('VNPT') || paRaw.includes('1 PHA') || !isEvn) {
       paDien = 'Điện VNPT 1P';
       donViPhuTrach = 'VNPT';
       is3Phase = false;
-    } else {
-      const paRaw = String(rowObj['PA Điện'] || rowObj['PA Điện'] || '').trim();
-      if (paRaw.includes('3P') || paRaw.includes('3 pha')) {
-        paDien = 'Điện EVN 3P';
-        is3Phase = true;
-      } else if (paRaw.includes('1P') || paRaw.includes('1 pha')) {
-        paDien = 'Điện VNPT 1P';
-        is3Phase = false;
-      }
+      isEve = false;
+    } else if (isEvn || paRaw.includes('3P') || paRaw.includes('EVN') || paRaw.includes('3 PHA')) {
+      paDien = 'Điện EVN 3P';
+      donViPhuTrach = 'Điện Lực';
+      is3Phase = true;
+      isEve = true;
     }
 
     const lapDienVal = String(rowObj['Lắp điện'] || rowObj['Lắp Điện'] || '').trim();
@@ -95,6 +90,7 @@ masterSheets.forEach(sheetName => {
       don_vi_phu_trach: donViPhuTrach,
       don_vi_dien_luc: donViDienLucVal || ('Điện lực ' + String(rowObj['Tổ HT'] || rowObj['Tổ hạ tầng'] || '').trim()),
       is_3phase: is3Phase,
+      is_eve: isEve,
       lap_dien: lapDienVal,
       status_lap_dat: statusLapDat,
       status_dien_luc: statusDienLuc,

@@ -17,16 +17,6 @@ import {
   Activity
 } from 'lucide-react';
 
-const EVE_33_IDS = new Set([
-  "V.E.PTH13628", "V.E.PTH13629", "V.E.PTH13630", "V.E.PTH13632", "V.E.PTH13635",
-  "V.E.PTH13638", "V.E.PTH13639", "V.E.PTH13644", "V.E.PTH13645", "V.E.PTH13647",
-  "V.E.PTH13650", "V.E.PTH13651", "V.E.PTH13654", "V.E.PTH13655", "V.E.PTH13656",
-  "V.E.PTH13658", "V.E.PTH13659", "V.E.PTH13661", "V.E.PTH13662", "V.E.PTH13671",
-  "V.E.PTH13674", "V.E.PTH13675", "V.E.PTH13677", "V.E.PTH14857", "V.E.PTH14859",
-  "V.E.PTH14861", "V.E.PTH14862", "V.E.PTH14869", "V.E.PTH14890", "V.E.PTH14892",
-  "V.E.PTH14928", "V.E.PTH14929", "V.E.PTH14931"
-]);
-
 export default function EveProgressTab({ stations, onSelectStation, onUpdateStation }) {
   const [selectedDot, setSelectedDot] = useState('ALL'); // 'ALL', 'đợt 1', 'đợt 2'
   const [selectedTeam, setSelectedTeam] = useState('ALL');
@@ -36,12 +26,14 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
   // Inline editing state
   const [editingRows, setEditingRows] = useState({});
 
-  // 1. Filter EVE 33 Stations scope (strictly 33 EVN 3-Phase stations: 23 Đợt 1 + 10 Đợt 2)
+  // 1. Filter EVE Stations scope (EVN 3-Phase stations dynamically)
   const eveStations = useMemo(() => {
     return stations.filter(s => {
-      const ma = (s.ma_tram || s.id || '').trim();
-      if (EVE_33_IDS.has(ma)) return true;
-      return s.is_eve === true && s.is_3phase !== false;
+      if (s.is_eve === false || s.is_3phase === false) return false;
+      const pa = (s.pa_dien || '').toLowerCase();
+      const dev = (s.don_vi_phu_trach || '').toLowerCase();
+      if (dev.includes('vnpt') || pa.includes('vnpt') || pa.includes('1p')) return false;
+      return s.is_eve === true || dev.includes('điện lực') || pa.includes('3p') || pa.includes('evn');
     });
   }, [stations]);
 
@@ -262,7 +254,7 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
               Theo Dõi Tiến Độ Lắp Tủ Đổi Pin Của EVE Theo Tổ Hạ Tầng
             </h2>
             <p className="text-xs text-slate-300 mt-1 max-w-3xl leading-relaxed">
-              Theo dõi chi tiết <strong className="text-blue-300">33 trạm EVE</strong> (Đợt 1: <strong className="text-sky-300">23 trạm</strong> | Đợt 2: <strong className="text-emerald-300">10 trạm</strong>). Cho phép cập nhật trực tiếp trạng thái <strong className="text-blue-200">Lắp điện</strong> và <strong className="text-slate-200">Lý do chưa triển khai</strong>.
+              Theo dõi chi tiết <strong className="text-blue-300">{eveStations.length} trạm EVE</strong> (Đợt 1: <strong className="text-sky-300">{dot1Count} trạm</strong> | Đợt 2: <strong className="text-emerald-300">{dot2Count} trạm</strong>). Cho phép cập nhật trực tiếp trạng thái <strong className="text-blue-200">Lắp điện</strong> và <strong className="text-slate-200">Lý do chưa triển khai</strong>.
             </p>
           </div>
 
@@ -276,7 +268,7 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
                   : 'text-slate-400 hover:text-white hover:bg-blue-950/40'
               }`}
             >
-              Tất Cả (33 trạm)
+              Tất Cả ({eveStations.length} trạm)
             </button>
             <button
               onClick={() => setSelectedDot('đợt 1')}
@@ -711,7 +703,7 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
         {/* Footer */}
         <div className="bg-[#080f1e]/90 px-4 py-3 border-t border-blue-950 text-xs text-slate-400 flex flex-col sm:flex-row justify-between items-center gap-2">
           <div>
-            Hiển thị <strong className="text-white">{filteredEveStations.length}</strong> / <strong className="text-blue-300">33 trạm EVE</strong>
+            Hiển thị <strong className="text-white">{filteredEveStations.length}</strong> / <strong className="text-blue-300">{eveStations.length} trạm EVE</strong>
           </div>
           <div className="text-[11px] text-slate-500">
             Tự động đồng bộ 2 chiều dữ liệu thời gian thực

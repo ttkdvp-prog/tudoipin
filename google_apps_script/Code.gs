@@ -179,7 +179,7 @@ function getAllStationData() {
       var is3Phase = true;
       var isEve = true;
 
-      if (isVnpt || paVal.indexOf('1P') !== -1 || paVal.indexOf('VNPT') !== -1 || paVal.indexOf('1 PHA') !== -1) {
+      if (isVnpt || paVal.indexOf('1P') !== -1 || paVal.indexOf('VNPT') !== -1 || paVal.indexOf('1 PHA') !== -1 || (!isEvn && colEvnMark !== -1)) {
         paDien = 'Điện VNPT 1P';
         donViPhuTrach = 'VNPT';
         is3Phase = false;

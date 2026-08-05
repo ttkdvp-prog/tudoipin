@@ -272,7 +272,7 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
               BÁO CÁO TIẾN ĐỘ LẮP TỦ ĐỔI PIN EVN (EVN 3 PHA)
             </div>
             <h2 className="text-xl md:text-2xl font-black text-white tracking-tight">
-              Theo Dõi Tiến Độ Lắp Tủ Đổi Pin Của EVN Theo Tổ Hạ Tầng
+              Theo Dõi Tiến Độ Lắp điện Tủ đổi pin của EVN
             </h2>
             <p className="text-xs text-slate-300 mt-1 max-w-3xl leading-relaxed">
               Theo dõi chi tiết <strong className="text-blue-300">{eveStations.length} trạm EVN</strong> (Đợt 1: <strong className="text-sky-300">{dot1Count} trạm</strong> | Đợt 2: <strong className="text-emerald-300">{dot2Count} trạm</strong>).

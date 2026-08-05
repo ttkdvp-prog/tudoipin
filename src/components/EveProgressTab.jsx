@@ -269,13 +269,13 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
           <div>
             <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-950/80 text-blue-300 border border-blue-500/30 mb-2">
               <Zap className="w-3.5 h-3.5 mr-1.5 text-blue-400" />
-              BÁO CÁO TIẾN ĐỘ LẮP TỦ ĐỔI PIN EVE (EVN 3 PHA)
+              BÁO CÁO TIẾN ĐỘ LẮP TỦ ĐỔI PIN EVN (EVN 3 PHA)
             </div>
             <h2 className="text-xl md:text-2xl font-black text-white tracking-tight">
-              Theo Dõi Tiến Độ Lắp Tủ Đổi Pin Của EVE Theo Tổ Hạ Tầng
+              Theo Dõi Tiến Độ Lắp Tủ Đổi Pin Của EVN Theo Tổ Hạ Tầng
             </h2>
             <p className="text-xs text-slate-300 mt-1 max-w-3xl leading-relaxed">
-              Theo dõi chi tiết <strong className="text-blue-300">{eveStations.length} trạm EVE</strong> (Đợt 1: <strong className="text-sky-300">{dot1Count} trạm</strong> | Đợt 2: <strong className="text-emerald-300">{dot2Count} trạm</strong>). Cho phép cập nhật trực tiếp trạng thái <strong className="text-blue-200">Lắp điện</strong> và <strong className="text-slate-200">Lý do chưa triển khai</strong>.
+              Theo dõi chi tiết <strong className="text-blue-300">{eveStations.length} trạm EVN</strong> (Đợt 1: <strong className="text-sky-300">{dot1Count} trạm</strong> | Đợt 2: <strong className="text-emerald-300">{dot2Count} trạm</strong>).
             </p>
           </div>
 
@@ -319,7 +319,7 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="glass-card rounded-xl p-4 border border-blue-500/20 bg-[#0c162c]/90">
           <div className="flex justify-between items-center text-xs font-semibold text-slate-400 uppercase tracking-wider">
-            <span>TỔNG SỐ TRẠM EVE</span>
+            <span>TỔNG SỐ TRẠM EVN</span>
             <Activity className="w-4 h-4 text-blue-400" />
           </div>
           <div className="text-3xl font-black text-white mt-2 tracking-tight">
@@ -376,7 +376,7 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
           <div className="flex items-center space-x-2">
             <Users className="w-4 h-4 text-blue-400" />
             <h3 className="text-sm font-bold text-white uppercase tracking-wide">
-              Tiến Độ Triển Khai Theo Từng Tổ Hạ Tầng (Các Tổ Lắp Đến Đâu)
+              Tiến Độ Triển Khai Theo Từng Tổ Hạ Tầng
             </h3>
           </div>
           <span className="text-xs text-slate-400 font-medium">
@@ -512,18 +512,18 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
             className="px-3.5 py-1.5 bg-blue-900/40 hover:bg-blue-800/60 text-blue-200 border border-blue-500/40 rounded-lg text-xs font-bold flex items-center space-x-1.5 transition-colors"
           >
             <Download className="w-3.5 h-3.5" />
-            <span>Xuất Excel EVE</span>
+            <span>Xuất Excel EVN</span>
           </button>
         </div>
       </div>
 
-      {/* Main EVE Station Data Table */}
+      {/* Main EVN Station Data Table */}
       <div className="glass-card rounded-xl overflow-hidden border border-blue-900/40 shadow-2xl">
         <div className="p-4 bg-[#080f1e]/90 border-b border-blue-900/40 flex items-center justify-between">
           <div>
             <h3 className="text-sm font-bold text-white flex items-center tracking-wide">
               <Zap className="w-4 h-4 text-blue-400 mr-2" />
-              Danh Sách Chi Tiết Trạm EVE & Chỉnh Sửa Trực Tiếp
+              Danh Sách Chi Tiết Trạm EVN & Chỉnh Sửa Trực Tiếp
             </h3>
             <p className="text-xs text-slate-400 mt-0.5">
               Cập nhật cột <strong className="text-blue-300">Lắp điện</strong> và <strong className="text-slate-300">Lý do chưa triển khai lắp điện</strong> ngay trên từng dòng.
@@ -557,7 +557,7 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
                 <tr>
                   <td colSpan="8" className="py-12 text-center text-slate-400">
                     <AlertTriangle className="w-8 h-8 mx-auto text-slate-500 mb-2" />
-                    <p className="font-semibold text-slate-300">Không tìm thấy trạm EVE phù hợp</p>
+                    <p className="font-semibold text-slate-300">Không tìm thấy trạm EVN phù hợp</p>
                   </td>
                 </tr>
               ) : (
@@ -729,7 +729,7 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
         {/* Footer */}
         <div className="bg-[#080f1e]/90 px-4 py-3 border-t border-blue-950 text-xs text-slate-400 flex flex-col sm:flex-row justify-between items-center gap-2">
           <div>
-            Hiển thị <strong className="text-white">{filteredEveStations.length}</strong> / <strong className="text-blue-300">{eveStations.length} trạm EVE</strong>
+            Hiển thị <strong className="text-white">{filteredEveStations.length}</strong> / <strong className="text-blue-300">{eveStations.length} trạm EVN</strong>
           </div>
           <div className="text-[11px] text-slate-500">
             Tự động đồng bộ 2 chiều dữ liệu thời gian thực

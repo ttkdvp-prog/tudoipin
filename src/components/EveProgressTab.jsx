@@ -19,6 +19,25 @@ import {
   FileSearch
 } from 'lucide-react';
 
+// Helper to accurately classify station status
+export function getStationStatusCategory(s) {
+  const ld = (s.lap_dien || '').toLowerCase();
+  const vm = (s.vuong_mac || '').toLowerCase();
+  const comb = (ld + ' ' + vm).trim();
+
+  if (comb.includes('đã lắp xong') || comb.includes('đã đóng điện') || comb.includes('nghiệm thu') || comb.includes('hoàn thành')) {
+    return 'DONE';
+  }
+
+  const isPendingProcedure = comb.includes('khảo sát') || comb.includes('hợp đồng') || comb.includes('soạn hđ') || comb.includes('chờ điện lực') || comb.includes('chờ evn') || comb.includes('giấy tờ') || comb.includes('hồ sơ');
+
+  if (!isPendingProcedure && (comb.includes('vướng') || comb.includes('chưa nhận') || comb.includes('mặt bằng') || comb.includes('cắt tường') || comb.includes('trở ngại') || comb.includes('khó khăn'))) {
+    return 'ISSUE';
+  }
+
+  return 'PENDING';
+}
+
 export default function EveProgressTab({ stations, onSelectStation, onUpdateStation }) {
   const [selectedDot, setSelectedDot] = useState('ALL'); // 'ALL', 'đợt 1', 'đợt 2'
   const [selectedTeam, setSelectedTeam] = useState('ALL');
@@ -39,7 +58,7 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
     });
   }, [stations]);
 
-  // 2. Count by Batch (Đợt 1 = 23, Đợt 2 = 10)
+  // 2. Count by Batch (Đợt 1, Đợt 2)
   const dot1Count = useMemo(() => {
     return eveStations.filter(s => {
       const ma = (s.ma_tram || s.id || '').trim();
@@ -70,16 +89,7 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
 
       const matchTeam = selectedTeam === 'ALL' || s.to_ht === selectedTeam;
 
-      const ld = (s.lap_dien || '').toLowerCase();
-      const vm = (s.vuong_mac || '').toLowerCase();
-      const comb = (ld + ' ' + vm).trim();
-      let cat = 'PENDING';
-      if (comb.includes('đã lắp xong') || comb.includes('đã đóng điện') || comb.includes('nghiệm thu') || comb.includes('hoàn thành')) {
-        cat = 'DONE';
-      } else if (comb.includes('vướng') || comb.includes('chưa nhận') || comb.includes('mặt bằng') || comb.includes('cắt tường') || vm.length > 5) {
-        cat = 'ISSUE';
-      }
-
+      const cat = getStationStatusCategory(s);
       const matchStatus = statusFilter === 'ALL' || cat === statusFilter;
 
       const search = searchTerm.toLowerCase();
@@ -113,17 +123,10 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
       }
       map[team].total++;
 
-      const ld = (s.lap_dien || '').toLowerCase();
-      const vm = (s.vuong_mac || '').toLowerCase();
-      const comb = (ld + ' ' + vm).trim();
-
-      if (comb.includes('đã lắp xong') || comb.includes('đã đóng điện') || comb.includes('nghiệm thu') || comb.includes('hoàn thành')) {
-        map[team].done++;
-      } else if (comb.includes('vướng') || comb.includes('chưa nhận') || comb.includes('mặt bằng') || comb.includes('cắt tường') || vm.length > 5) {
-        map[team].issue++;
-      } else {
-        map[team].pending++;
-      }
+      const cat = getStationStatusCategory(s);
+      if (cat === 'DONE') map[team].done++;
+      else if (cat === 'ISSUE') map[team].issue++;
+      else map[team].pending++;
     });
 
     return Object.values(map).sort((a, b) => b.total - a.total);
@@ -137,17 +140,10 @@ export default function EveProgressTab({ stations, onSelectStation, onUpdateStat
     let issue = 0;
 
     filteredEveStations.forEach(s => {
-      const ld = (s.lap_dien || '').toLowerCase();
-      const vm = (s.vuong_mac || '').toLowerCase();
-      const comb = (ld + ' ' + vm).trim();
-
-      if (comb.includes('đã lắp xong') || comb.includes('đã đóng điện') || comb.includes('nghiệm thu') || comb.includes('hoàn thành')) {
-        done++;
-      } else if (comb.includes('vướng') || comb.includes('chưa nhận') || comb.includes('mặt bằng') || comb.includes('cắt tường') || vm.length > 5) {
-        issue++;
-      } else {
-        pending++;
-      }
+      const cat = getStationStatusCategory(s);
+      if (cat === 'DONE') done++;
+      else if (cat === 'ISSUE') issue++;
+      else pending++;
     });
 
     return { total, done, pending, issue };

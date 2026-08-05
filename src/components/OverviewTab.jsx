@@ -3,6 +3,7 @@ import StatCard from './StatCard';
 import { Wrench, Zap, AlertTriangle, Layers, Building2, CheckCircle2, Search, Filter } from 'lucide-react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 import { Bar, Doughnut } from 'react-chartjs-2';
+import { getStationStatusCategory } from './EveProgressTab';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
@@ -35,21 +36,12 @@ export default function OverviewTab({ stations, onSelectStation }) {
   const totalStations = filteredStations.length;
   const totalCabinets = filteredStations.reduce((acc, s) => acc + (s.so_luong_tu || 2), 0);
 
-  // Status counters
+  // Status counters via central getStationStatusCategory
   const installedDone = filteredStations.filter(s => s.status_lap_dat === 'Đã hoàn thành').length;
-  const installedProgress = filteredStations.filter(s => s.status_lap_dat === 'Đang thi công').length;
 
-  const powerDone = filteredStations.filter(s => {
-    const vm = (s.vuong_mac || '').toLowerCase();
-    return vm.includes('đóng điện') || vm.includes('nghiệm thu') || vm.includes('đã hoàn thành') || s.status_dien_luc === 'Đã đóng điện 3P';
-  }).length;
-
-  const powerPending = filteredStations.filter(s => {
-    const vm = (s.vuong_mac || '').toLowerCase();
-    return vm.includes('khảo sát') || vm.includes('hợp đồng') || vm.includes('chờ điện lực') || vm.includes('soạn hđ');
-  }).length;
-
-  const totalIssues = filteredStations.filter(s => s.vuong_mac && s.vuong_mac.trim().length > 3 && !(s.vuong_mac.toLowerCase().includes('đã hoàn thành') || s.vuong_mac.toLowerCase().includes('đã đóng điện'))).length;
+  const powerDone = filteredStations.filter(s => getStationStatusCategory(s) === 'DONE').length;
+  const totalIssues = filteredStations.filter(s => getStationStatusCategory(s) === 'ISSUE').length;
+  const powerPending = filteredStations.filter(s => getStationStatusCategory(s) === 'PENDING').length;
 
   // Breakdown by Tổ Hạ Tầng
   const teamsMap = {};
@@ -59,13 +51,9 @@ export default function OverviewTab({ stations, onSelectStation }) {
     teamsMap[team].total++;
     if (s.status_lap_dat === 'Đã hoàn thành') teamsMap[team].installed++;
 
-    const vm = (s.vuong_mac || '').toLowerCase();
-    if (vm.includes('đóng điện') || vm.includes('nghiệm thu') || vm.includes('đã hoàn thành') || s.status_dien_luc === 'Đã đóng điện 3P') {
-      teamsMap[team].powerDone++;
-    }
-    if (s.vuong_mac && s.vuong_mac.trim().length > 3 && !(vm.includes('đã hoàn thành') || vm.includes('đã đóng điện'))) {
-      teamsMap[team].issues++;
-    }
+    const cat = getStationStatusCategory(s);
+    if (cat === 'DONE') teamsMap[team].powerDone++;
+    if (cat === 'ISSUE') teamsMap[team].issues++;
   });
 
   const teamLabels = Object.keys(teamsMap);

@@ -21,20 +21,43 @@ import {
 
 // Helper to accurately classify station status
 export function getStationStatusCategory(s) {
-  const ld = (s.lap_dien || '').toLowerCase();
-  const vm = (s.vuong_mac || '').toLowerCase();
+  const ld = (s.lap_dien || '').toLowerCase().trim();
+  const vm = (s.vuong_mac || '').toLowerCase().trim();
   const comb = (ld + ' ' + vm).trim();
 
-  if (comb.includes('đã lắp xong') || comb.includes('đã đóng điện') || comb.includes('nghiệm thu') || comb.includes('hoàn thành')) {
+  // 1. Completed
+  if (
+    comb.includes('đã lắp xong') ||
+    comb.includes('đã đóng điện') ||
+    comb.includes('nghiệm thu') ||
+    comb.includes('hoàn thành') ||
+    ld === 'đã lắp xong'
+  ) {
     return 'DONE';
   }
 
-  const isPendingProcedure = comb.includes('khảo sát') || comb.includes('hợp đồng') || comb.includes('soạn hđ') || comb.includes('chờ điện lực') || comb.includes('chờ evn') || comb.includes('giấy tờ') || comb.includes('hồ sơ');
+  // 2. Real Issues / Vướng mắc / Trở ngại / Yêu cầu đặc biệt (ví dụ: "Điện lực yêu cầu làm 1 đầu mối ký hợp đồng")
+  const isExplicitIssue =
+    comb.includes('vướng') ||
+    comb.includes('yêu cầu') ||
+    comb.includes('mặt bằng') ||
+    comb.includes('thi công') ||
+    comb.includes('cắt tường') ||
+    comb.includes('chưa nhận') ||
+    comb.includes('chưa đồng ý') ||
+    comb.includes('không đồng ý') ||
+    comb.includes('trở ngại') ||
+    comb.includes('khó khăn') ||
+    comb.includes('tạm dừng') ||
+    comb.includes('từ chối') ||
+    comb.includes('vgreen') ||
+    ld.includes('vướng');
 
-  if (!isPendingProcedure && (comb.includes('vướng') || comb.includes('chưa nhận') || comb.includes('mặt bằng') || comb.includes('cắt tường') || comb.includes('trở ngại') || comb.includes('khó khăn'))) {
+  if (isExplicitIssue) {
     return 'ISSUE';
   }
 
+  // 3. Pending (Waiting for survey / procedure / contract / standard pending)
   return 'PENDING';
 }
 
